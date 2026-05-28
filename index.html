@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRM 성과 대시보드 · May 2026</title>
+<title>CRM 성과 대시보드 · 실시간 연동 모드</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -73,169 +73,70 @@
   /* LAYOUT */
   .main { padding: 24px 32px; max-width: 1600px; margin: 0 auto; }
 
-  /* METRIC SELECTOR */
-  .metric-bar {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-bottom: 24px;
+  /* LOADING OVERLAY */
+  #loading {
+    position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(13,15,20,0.9);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:999;
+    font-size:16px; color:var(--accent); font-family:'Space Mono', monospace;
   }
+
+  /* METRIC SELECTOR */
+  .metric-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
   .metric-btn {
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-dim);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 11px;
-    font-family: 'Noto Sans KR', sans-serif;
-    transition: all 0.2s;
-    white-space: nowrap;
+    padding: 6px 14px; border: 1px solid var(--border); background: var(--surface); color: var(--text-dim);
+    border-radius: 20px; cursor: pointer; font-size: 11px; font-family: 'Noto Sans KR', sans-serif; transition: all 0.2s; white-space: nowrap;
   }
   .metric-btn:hover { border-color: var(--accent); color: var(--accent); }
   .metric-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-    box-shadow: 0 0 16px rgba(79,142,247,0.3);
+    background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 16px rgba(79,142,247,0.3);
   }
 
   /* STAT CARDS */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--card-accent, var(--accent));
-  }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-accent, var(--accent)); }
   .stat-card:hover { border-color: var(--card-accent, var(--accent)); }
   .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
   .stat-value { font-family: 'Space Mono', monospace; font-size: 20px; color: var(--text); }
   .stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
   /* CHARTS GRID */
-  .charts-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-  }
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
   .chart-card.full { grid-column: 1/-1; }
-  .chart-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
+  .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .chart-title { font-size: 13px; font-weight: 500; color: var(--text); }
   .chart-subtitle { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-  .chart-tag {
-    font-size: 9px;
-    padding: 3px 8px;
-    border-radius: 10px;
-    background: var(--glow);
-    color: var(--accent);
-    border: 1px solid rgba(79,142,247,0.2);
-    font-family: 'Space Mono', monospace;
-  }
+  .chart-tag { font-size: 9px; padding: 3px 8px; border-radius: 10px; background: var(--glow); color: var(--accent); border: 1px solid rgba(79,142,247,0.2); font-family: 'Space Mono', monospace; }
   .chart-wrap { position: relative; height: 260px; }
   .chart-wrap.tall { height: 320px; }
 
   /* DRILLDOWN PANEL */
-  .drilldown-panel {
-    background: var(--surface);
-    border: 1px solid var(--accent);
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 24px;
-    box-shadow: 0 0 32px rgba(79,142,247,0.08);
-    display: none;
-  }
+  .drilldown-panel { background: var(--surface); border: 1px solid var(--accent); border-radius: 14px; padding: 20px; margin-bottom: 24px; box-shadow: 0 0 32px rgba(79,142,247,0.08); display: none; }
   .drilldown-panel.visible { display: block; }
-  .drilldown-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
+  .drilldown-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .drilldown-title { font-size: 14px; font-weight: 600; color: var(--accent); }
-  .close-btn {
-    width: 28px; height: 28px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .close-btn { width: 28px; height: 28px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
   .close-btn:hover { color: var(--text); border-color: var(--accent3); }
 
   /* TABLE */
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
-  th {
-    text-align: left;
-    padding: 8px 12px;
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  td {
-    padding: 8px 12px;
-    font-size: 12px;
-    color: var(--text-dim);
-    border-bottom: 1px solid rgba(37,42,56,0.5);
-    white-space: nowrap;
-  }
+  th { text-align: left; padding: 8px 12px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 8px 12px; font-size: 12px; color: var(--text-dim); border-bottom: 1px solid rgba(37,42,56,0.5); white-space: nowrap; }
   tr:hover td { background: var(--surface2); color: var(--text); }
-  .rank-badge {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    font-size: 10px;
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-  }
+  .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-family: 'Space Mono', monospace; font-weight: 700; }
   .rank-1 { background: rgba(247,199,79,0.2); color: #f7c74f; }
   .rank-2 { background: rgba(156,163,175,0.2); color: #9ca3af; }
   .rank-3 { background: rgba(247,111,79,0.2); color: #f76f4f; }
   .rank-n { background: var(--surface2); color: var(--text-muted); }
 
-  .bar-inline {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .bar-bg {
-    flex: 1; height: 4px; background: var(--border); border-radius: 2px; min-width: 60px;
-  }
+  .bar-inline { display: flex; align-items: center; gap: 8px; }
+  .bar-bg { flex: 1; height: 4px; background: var(--border); border-radius: 2px; min-width: 60px; }
   .bar-fill { height: 100%; border-radius: 2px; background: var(--accent); transition: width 0.4s; }
 
   /* CHANNEL PILLS */
-  .pill {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 500;
-  }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; }
   .pill-sms { background: rgba(79,206,164,0.15); color: #4fcea4; }
   .pill-kakao-at { background: rgba(247,199,79,0.15); color: #f7c74f; }
   .pill-kakao-ft { background: rgba(247,111,79,0.15); color: #f76f4f; }
@@ -254,24 +155,17 @@
 </head>
 <body>
 
+<div id="loading">📊 구글 스프레드시트에서 실시간 데이터를 불러오는 중...</div>
+
 <div class="header">
   <div class="header-left">
     <div class="logo-dot"></div>
     <div>
       <div class="header-title">CRM ANALYTICS</div>
-      <div class="header-sub" id="headerSub">May 2026 · 월간 성과 대시보드</div>
+      <div class="header-sub" id="headerSub">실시간 연동 성과 대시보드</div>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:16px;">
-    <!-- 기간 선택 필터 -->
-    <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 14px;">
-      <span style="font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;">기간</span>
-      <div style="display:flex;gap:4px;" id="periodBtns">
-        <button onclick="setPeriod('may')"   id="btn-may"   class="period-btn active">5월 (May)</button>
-        <button onclick="setPeriod('apr')"   id="btn-apr"   class="period-btn">4월 (Apr)</button>
-        <button onclick="setPeriod('both')"  id="btn-both"  class="period-btn">전체 비교</button>
-      </div>
-    </div>
     <div class="breadcrumb" id="breadcrumb">
       <span onclick="resetDrill()">전체 채널</span>
     </div>
@@ -279,20 +173,10 @@
 </div>
 
 <div class="main">
-
-  <!-- MoM 비교 배너 (전체 비교 모드일 때만 표시) -->
-  <div id="momBanner" style="display:none;background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(79,206,164,.08));border:1px solid rgba(79,142,247,.25);border-radius:12px;padding:16px 24px;margin-bottom:20px;">
-    <div style="font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">📅 월간 비교 요약 (Apr vs May)</div>
-    <div style="display:flex;gap:24px;flex-wrap:wrap;" id="momCards"></div>
-  </div>
-
-  <!-- METRIC SELECTOR -->
   <div class="metric-bar" id="metricBar"></div>
 
-  <!-- STAT CARDS -->
   <div class="stat-grid" id="statGrid"></div>
 
-  <!-- DRILLDOWN PANEL -->
   <div class="drilldown-panel" id="drillPanel">
     <div class="drilldown-header">
       <div>
@@ -307,7 +191,6 @@
     </div>
   </div>
 
-  <!-- MAIN CHARTS -->
   <div class="charts-grid">
     <div class="chart-card full">
       <div class="chart-header">
@@ -361,7 +244,6 @@
     </div>
   </div>
 
-  <!-- BOTTOM TABLE -->
   <div class="chart-card" style="margin-bottom:16px;">
     <div class="chart-header">
       <div>
@@ -378,720 +260,83 @@
     </div>
     <div class="table-wrap" id="fullTable"></div>
   </div>
-
-  <!-- ============================
-       캠페인 상세 비교 분석
-  ============================= -->
-  <div class="chart-card" id="campaignCompareSection">
-    <div class="chart-header" style="margin-bottom:0;">
-      <div>
-        <div class="chart-title">🔍 캠페인 상세 비교 분석</div>
-        <div class="chart-subtitle">복수 캠페인 선택 후 모든 지표를 한 눈에 비교</div>
-      </div>
-      <div class="chart-tag">MULTI-SELECT · COMPARE</div>
-    </div>
-
-    <!-- Filter Row -->
-    <div style="display:flex;gap:12px;align-items:flex-start;margin-top:20px;flex-wrap:wrap;">
-      <!-- Channel Filter -->
-      <div style="display:flex;flex-direction:column;gap:6px;min-width:160px;">
-        <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">채널 필터</label>
-        <select id="channelFilter" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer;">
-          <option value="">전체 채널</option>
-        </select>
-      </div>
-
-      <!-- Campaign Multi-Select -->
-      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:280px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">캠페인 선택 <span id="selectedCount" style="color:var(--accent);margin-left:6px;">0개 선택</span></label>
-          <div style="display:flex;gap:6px;">
-            <button onclick="selectAllCampaigns()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:5px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:inherit;">전체 선택</button>
-            <button onclick="clearCampaigns()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:5px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:inherit;">초기화</button>
-          </div>
-        </div>
-        <!-- Search box -->
-        <input id="campaignSearch" type="text" placeholder="캠페인명 검색..." style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" oninput="filterCampaignList()">
-        <!-- Dropdown list -->
-        <div id="campaignDropdown" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;display:none;"></div>
-      </div>
-
-      <!-- Selected Tags -->
-      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px;">
-        <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">선택된 캠페인</label>
-        <div id="selectedTags" style="display:flex;flex-wrap:wrap;gap:6px;min-height:38px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;">
-          <span style="color:var(--text-muted);font-size:11px;align-self:center;">캠페인을 선택하세요</span>
-        </div>
-      </div>
-
-      <!-- Compare Button -->
-      <div style="display:flex;flex-direction:column;justify-content:flex-end;min-width:100px;">
-        <label style="font-size:10px;color:transparent;margin-bottom:6px;">ㅤ</label>
-        <button onclick="runComparison()" id="compareBtn" style="background:var(--accent);border:none;color:#fff;border-radius:8px;padding:10px 20px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:500;box-shadow:0 0 16px rgba(79,142,247,.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">비교 실행 ▶</button>
-      </div>
-    </div>
-
-    <!-- Result Area -->
-    <div id="compareResult" style="margin-top:24px;display:none;">
-      <!-- Radar + Bar side by side -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-          <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:12px;">📡 전환율 레이더 비교</div>
-          <div style="height:260px;position:relative;"><canvas id="compareRadar"></canvas></div>
-        </div>
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-          <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:12px;">💰 주문금액 / 주문수 비교</div>
-          <div style="height:260px;position:relative;"><canvas id="compareBar"></canvas></div>
-        </div>
-      </div>
-      <!-- Full metric table -->
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:14px;">📋 전체 지표 비교표</div>
-        <div class="table-wrap" id="compareTable"></div>
-      </div>
-    </div>
-
-    <!-- Empty state -->
-    <div id="compareEmpty" style="text-align:center;padding:48px;color:var(--text-muted);">
-      <div style="font-size:32px;margin-bottom:12px;">🎯</div>
-      <div style="font-size:13px;">위에서 캠페인을 선택하고 <strong style="color:var(--accent)">비교 실행</strong>을 눌러주세요</div>
-      <div style="font-size:11px;margin-top:6px;">복수 선택 시 나란히 비교할 수 있습니다</div>
-    </div>
-  </div>
-
-  <!-- ============================
-       캠페인 단위 퍼널 분석
-  ============================= -->
-  <div class="chart-card" id="campaignFunnelSection" style="margin-top:16px;">
-    <div class="chart-header" style="margin-bottom:0;">
-      <div>
-        <div class="chart-title">🔽 캠페인 단위 퍼널 분석</div>
-        <div class="chart-subtitle">캠페인별 세션 → 상품상세 → 장바구니 → 체크아웃 → 주문 흐름과 단계별 이탈률 확인</div>
-      </div>
-      <div class="chart-tag">FUNNEL · CAMPAIGN</div>
-    </div>
-
-    <!-- Filter Row -->
-    <div style="display:flex;gap:12px;align-items:flex-start;margin-top:20px;flex-wrap:wrap;">
-      <!-- Channel Filter -->
-      <div style="display:flex;flex-direction:column;gap:6px;min-width:160px;">
-        <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">채널 필터</label>
-        <select id="funnelChannelFilter" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer;">
-          <option value="">전체 채널</option>
-        </select>
-      </div>
-
-      <!-- Campaign Multi-Select -->
-      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:280px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">캠페인 선택 <span id="funnelSelectedCount" style="color:var(--accent4);margin-left:6px;">0개 선택</span></label>
-          <div style="display:flex;gap:6px;">
-            <button onclick="funnelSelectAll()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:5px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:inherit;">전체 선택</button>
-            <button onclick="funnelClear()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:5px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:inherit;">초기화</button>
-          </div>
-        </div>
-        <input id="funnelSearch" type="text" placeholder="캠페인명 검색..." style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent4)';showFunnelDropdown()" onblur="this.style.borderColor='var(--border)'" oninput="filterFunnelList()">
-        <div id="funnelDropdown" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;display:none;"></div>
-      </div>
-
-      <!-- Selected Tags -->
-      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px;">
-        <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">선택된 캠페인</label>
-        <div id="funnelSelectedTags" style="display:flex;flex-wrap:wrap;gap:6px;min-height:38px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;">
-          <span style="color:var(--text-muted);font-size:11px;align-self:center;">캠페인을 선택하세요</span>
-        </div>
-      </div>
-
-      <!-- View Mode + Run -->
-      <div style="display:flex;flex-direction:column;gap:6px;min-width:140px;">
-        <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">보기 방식</label>
-        <select id="funnelViewMode" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer;">
-          <option value="absolute">절대값 (세션수)</option>
-          <option value="rate">비율 (전환율 %)</option>
-        </select>
-        <button onclick="runFunnelAnalysis()" style="background:var(--accent4);border:none;color:#0d0f14;border-radius:8px;padding:9px 16px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:700;box-shadow:0 0 16px rgba(79,206,164,.25);transition:all .2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">퍼널 분석 ▶</button>
-      </div>
-    </div>
-
-    <!-- Result Area -->
-    <div id="funnelResult" style="margin-top:28px;display:none;">
-
-      <!-- 퍼널 스텝 시각화 (SVG 스타일) -->
-      <div id="funnelStepsWrap" style="margin-bottom:24px;"></div>
-
-      <!-- 퍼널 차트 + 이탈률 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-          <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:12px;">📊 캠페인별 퍼널 비교</div>
-          <div style="height:300px;position:relative;"><canvas id="funnelCampChart"></canvas></div>
-        </div>
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-          <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:12px;">📉 단계별 이탈률</div>
-          <div style="height:300px;position:relative;"><canvas id="funnelDropoffChart"></canvas></div>
-        </div>
-      </div>
-
-      <!-- 퍼널 수치 상세 테이블 -->
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-        <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:14px;">📋 퍼널 단계별 수치 상세</div>
-        <div class="table-wrap" id="funnelDetailTable"></div>
-      </div>
-    </div>
-
-    <!-- Empty state -->
-    <div id="funnelEmpty" style="text-align:center;padding:48px;color:var(--text-muted);">
-      <div style="font-size:32px;margin-bottom:12px;">🔽</div>
-      <div style="font-size:13px;">캠페인을 선택하고 <strong style="color:var(--accent4)">퍼널 분석</strong>을 눌러주세요</div>
-      <div style="font-size:11px;margin-top:6px;">최대 8개 캠페인까지 동시에 비교할 수 있습니다</div>
-    </div>
-  </div>
-
 </div>
 
-<div class="footer">CRM Analytics Dashboard · May 2026 · Built with Chart.js</div>
+<div class="footer">CRM Analytics Dashboard · 구글 시트 실시간 연동 완료 · Built with Chart.js</div>
 
 <script>
 // ============================
-// RAW DATA PARSING
+// GOOGLE SHEET LINK FETCHING & PIECE MATRIX RE-BUILD
 // ============================
-const RAW = `레퍼럴	CRM	문자메세지	CRM_POINT_260319	평균주문금액	May-26	월간	46360.83333
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	상세比 주문전환율	May-26	월간	0.177777778
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	유입比 주문전환율	May-26	월간	0.428571429
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	상품상세전환율	May-26	월간	0.586956522
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	주문금액	May-26	월간	1112660
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	주문수	May-26	월간	24
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	체크아웃세션수	May-26	월간	39
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	장바구니세션수	May-26	월간	39
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	상품상세세션수	May-26	월간	135
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	세션수	May-26	월간	230
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	평균주문금액	May-26	월간	727700
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상세比 주문전환율	May-26	월간	0.185185185
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	유입比 주문전환율	May-26	월간	0.181818182
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상품상세전환율	May-26	월간	0.574468085
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	주문금액	May-26	월간	3638500
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	주문수	May-26	월간	5
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상품상세세션수	May-26	월간	27
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	세션수	May-26	월간	47
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	유입比 주문전환율	May-26	월간	0.096238938
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	유입比 주문전환율	May-26	월간	0.107480653
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	평균주문금액	May-26	월간	584557.931
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.156756757
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.613938053
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	주문금액	May-26	월간	50856540
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	주문수	May-26	월간	87
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	225
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	159
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	555
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	세션수	May-26	월간	904
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	평균주문금액	May-26	월간	394956.72
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	상세比 주문전환율	May-26	월간	0.209380235
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	상품상세전환율	May-26	월간	0.513327601
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	주문금액	May-26	월간	49369590
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	주문수	May-26	월간	125
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	체크아웃세션수	May-26	월간	236
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	장바구니세션수	May-26	월간	145
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	상품상세세션수	May-26	월간	597
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	세션수	May-26	월간	1163
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	평균주문금액	May-26	월간	443420
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상세比 주문전환율	May-26	월간	0.011315417
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상품상세전환율	May-26	월간	0.640398551
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	주문금액	May-26	월간	3547360
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	주문수	May-26	월간	8
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	체크아웃세션수	May-26	월간	36
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	장바구니세션수	May-26	월간	42
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상품상세세션수	May-26	월간	707
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	세션수	May-26	월간	1104
-레퍼럴	CRM	카카오 알림톡	interior_review_write	평균주문금액	May-26	월간	242941.4286
-레퍼럴	CRM	카카오 알림톡	interior_review_write	상세比 주문전환율	May-26	월간	0.083333333
-레퍼럴	CRM	카카오 알림톡	interior_review_write	상품상세전환율	May-26	월간	0.148017621
-레퍼럴	CRM	카카오 알림톡	interior_review_write	주문금액	May-26	월간	3401180
-레퍼럴	CRM	카카오 알림톡	interior_review_write	주문수	May-26	월간	14
-레퍼럴	CRM	카카오 알림톡	interior_review_write	체크아웃세션수	May-26	월간	33
-레퍼럴	CRM	카카오 알림톡	interior_review_write	장바구니세션수	May-26	월간	42
-레퍼럴	CRM	카카오 알림톡	interior_review_write	상품상세세션수	May-26	월간	168
-레퍼럴	CRM	카카오 알림톡	interior_review_write	세션수	May-26	월간	1135
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	평균주문금액	May-26	월간	336075
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상세比 주문전환율	May-26	월간	0.011299435
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상품상세전환율	May-26	월간	0.667924528
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	주문금액	May-26	월간	1344300
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	체크아웃세션수	May-26	월간	26
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	장바구니세션수	May-26	월간	24
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상품상세세션수	May-26	월간	354
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	세션수	May-26	월간	530
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	평균주문금액	May-26	월간	689633.3333
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상세比 주문전환율	May-26	월간	0.087719298
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상품상세전환율	May-26	월간	0.462162162
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	주문금액	May-26	월간	10344500
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	주문수	May-26	월간	15
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	체크아웃세션수	May-26	월간	50
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	장바구니세션수	May-26	월간	31
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상품상세세션수	May-26	월간	171
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	세션수	May-26	월간	370
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	평균주문금액	May-26	월간	1355980
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상세比 주문전환율	May-26	월간	0.027027027
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상품상세전환율	May-26	월간	0.573643411
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	주문금액	May-26	월간	2711960
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	장바구니세션수	May-26	월간	11
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상품상세세션수	May-26	월간	74
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	세션수	May-26	월간	129
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	평균주문금액	May-26	월간	1508520
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상세比 주문전환율	May-26	월간	0.036363636
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상품상세전환율	May-26	월간	0.466101695
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	주문금액	May-26	월간	3017040
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	장바구니세션수	May-26	월간	8
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상품상세세션수	May-26	월간	55
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	세션수	May-26	월간	118
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	평균주문금액	May-26	월간	707590
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상세比 주문전환율	May-26	월간	0.04950495
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상품상세전환율	May-26	월간	0.469767442
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	주문금액	May-26	월간	3537950
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	체크아웃세션수	May-26	월간	30
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	장바구니세션수	May-26	월간	23
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상품상세세션수	May-26	월간	101
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	세션수	May-26	월간	215
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	평균주문금액	May-26	월간	729386.9231
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상세比 주문전환율	May-26	월간	0.164556962
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상품상세전환율	May-26	월간	0.572463768
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	주문금액	May-26	월간	9482030
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	주문수	May-26	월간	13
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	체크아웃세션수	May-26	월간	30
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	장바구니세션수	May-26	월간	29
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상품상세세션수	May-26	월간	79
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	세션수	May-26	월간	138
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	평균주문금액	May-26	월간	329784.2857
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상세比 주문전환율	May-26	월간	0.061403509
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상품상세전환율	May-26	월간	0.754966887
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	주문금액	May-26	월간	2308490
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	주문수	May-26	월간	7
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	체크아웃세션수	May-26	월간	17
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	장바구니세션수	May-26	월간	34
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상품상세세션수	May-26	월간	114
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	세션수	May-26	월간	151
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	평균주문금액	May-26	월간	536283.3333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상세比 주문전환율	May-26	월간	0.107142857
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상품상세전환율	May-26	월간	0.577319588
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	주문금액	May-26	월간	3217700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	체크아웃세션수	May-26	월간	18
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	장바구니세션수	May-26	월간	14
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상품상세세션수	May-26	월간	56
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	세션수	May-26	월간	97
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	평균주문금액	May-26	월간	863740
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상세比 주문전환율	May-26	월간	0.1
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상품상세전환율	May-26	월간	0.476190476
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	주문금액	May-26	월간	3454960
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	장바구니세션수	May-26	월간	10
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상품상세세션수	May-26	월간	40
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	세션수	May-26	월간	84
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	평균주문금액	May-26	월간	332633.3333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상세比 주문전환율	May-26	월간	0.068181818
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상품상세전환율	May-26	월간	0.578947368
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	주문금액	May-26	월간	997900
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	체크아웃세션수	May-26	월간	8
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	장바구니세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상품상세세션수	May-26	월간	44
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	세션수	May-26	월간	76
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	평균주문금액	May-26	월간	559605
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상세比 주문전환율	May-26	월간	0.162162162
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상품상세전환율	May-26	월간	0.493333333
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	주문금액	May-26	월간	3357630
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	장바구니세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상품상세세션수	May-26	월간	37
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	세션수	May-26	월간	75
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	평균주문금액	May-26	월간	712943.3333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상세比 주문전환율	May-26	월간	0.157894737
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상품상세전환율	May-26	월간	0.422222222
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	주문금액	May-26	월간	2138830
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	체크아웃세션수	May-26	월간	12
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상품상세세션수	May-26	월간	19
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	세션수	May-26	월간	45
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	평균주문금액	May-26	월간	70233.33333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상세比 주문전환율	May-26	월간	0.125
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상품상세전환율	May-26	월간	0.75
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	주문금액	May-26	월간	210700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	장바구니세션수	May-26	월간	10
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상품상세세션수	May-26	월간	24
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	세션수	May-26	월간	32
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	평균주문금액	May-26	월간	703700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상세比 주문전환율	May-26	월간	0.038461538
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상품상세전환율	May-26	월간	0.634146341
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	주문금액	May-26	월간	703700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상품상세세션수	May-26	월간	26
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	세션수	May-26	월간	41
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	평균주문금액	May-26	월간	122800
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상세比 주문전환율	May-26	월간	0.2
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상품상세전환율	May-26	월간	0.833333333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	주문금액	May-26	월간	122800
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	체크아웃세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상품상세세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	세션수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	평균주문금액	May-26	월간	2568240
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상세比 주문전환율	May-26	월간	0.052631579
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상품상세전환율	May-26	월간	0.5
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	주문금액	May-26	월간	2568240
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	체크아웃세션수	May-26	월간	7
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	장바구니세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상품상세세션수	May-26	월간	19
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	세션수	May-26	월간	38
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	평균주문금액	May-26	월간	1444560
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상세比 주문전환율	May-26	월간	0.133333333
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상품상세전환율	May-26	월간	0.576923077
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	주문금액	May-26	월간	2889120
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	장바구니세션수	May-26	월간	0
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상품상세세션수	May-26	월간	15
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	세션수	May-26	월간	26
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	평균주문금액	May-26	월간	1621000
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상세比 주문전환율	May-26	월간	0.047619048
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상품상세전환율	May-26	월간	0.617647059
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	주문금액	May-26	월간	1621000
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	장바구니세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상품상세세션수	May-26	월간	21
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	세션수	May-26	월간	34
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	평균주문금액	May-26	월간	360017.1984
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.127582645
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.622107969
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	주문금액	May-26	월간	88924248
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	주문수	May-26	월간	247
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	624
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	534
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	1936
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	세션수	May-26	월간	3112
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	평균주문금액	May-26	월간	291900
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상세比 주문전환율	May-26	월간	0.036363636
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상품상세전환율	May-26	월간	0.604395604
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	주문금액	May-26	월간	583800
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	주문수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	장바구니세션수	May-26	월간	6
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상품상세세션수	May-26	월간	55
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	세션수	May-26	월간	91
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	평균주문금액	May-26	월간	536340
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상세比 주문전환율	May-26	월간	0.11627907
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상품상세전환율	May-26	월간	0.565789474
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	주문금액	May-26	월간	2681700
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	주문수	May-26	월간	5
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	체크아웃세션수	May-26	월간	10
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	장바구니세션수	May-26	월간	12
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상품상세세션수	May-26	월간	43
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	세션수	May-26	월간	76
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	평균주문금액	May-26	월간	545060
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상세比 주문전환율	May-26	월간	0.121212121
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상품상세전환율	May-26	월간	0.66
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	주문금액	May-26	월간	2180240
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	주문수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	장바구니세션수	May-26	월간	9
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상품상세세션수	May-26	월간	33
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	세션수	May-26	월간	50
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	평균주문금액	May-26	월간	2705035
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상세比 주문전환율	May-26	월간	0.117647059
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상품상세전환율	May-26	월간	0.85
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	주문금액	May-26	월간	10820140
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	주문수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	체크아웃세션수	May-26	월간	14
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	장바구니세션수	May-26	월간	10
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상품상세세션수	May-26	월간	34
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	세션수	May-26	월간	40
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	평균주문금액	May-26	월간	434480
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상세比 주문전환율	May-26	월간	0.095238095
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상품상세전환율	May-26	월간	0.724137931
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	주문금액	May-26	월간	868960
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	주문수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	장바구니세션수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상품상세세션수	May-26	월간	21
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	세션수	May-26	월간	29
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	평균주문금액	May-26	월간	1512280
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상세比 주문전환율	May-26	월간	0.066666667
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상품상세전환율	May-26	월간	0.535714286
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	주문금액	May-26	월간	1512280
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	주문수	May-26	월간	1
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	체크아웃세션수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상품상세세션수	May-26	월간	15
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	세션수	May-26	월간	28
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	평균주문금액	May-26	월간	1734826.667
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상세比 주문전환율	May-26	월간	0.75
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상품상세전환율	May-26	월간	0.571428571
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	주문금액	May-26	월간	5204480
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	주문수	May-26	월간	3
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	장바구니세션수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상품상세세션수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	세션수	May-26	월간	7
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	평균주문금액	May-26	월간	196659.4444
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.08490566
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.191681736
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	주문금액	May-26	월간	3539870
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	주문수	May-26	월간	18
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	37
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	22
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	212
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	세션수	May-26	월간	1106
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	평균주문금액	May-26	월간	575643.3333
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	상세比 주문전환율	May-26	월간	0.043478261
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	상품상세전환율	May-26	월간	0.096503497
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	주문금액	May-26	월간	1726930
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	장바구니세션수	May-26	월간	8
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	상품상세세션수	May-26	월간	69
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	세션수	May-26	월간	715
-레퍼럴	CRM	카카오 친구톡	HF_F	평균주문금액	May-26	월간	457838
-레퍼럴	CRM	카카오 친구톡	HF_F	상세比 주문전환율	May-26	월간	0.092511013
-레퍼럴	CRM	카카오 친구톡	HF_F	상품상세전환율	May-26	월간	0.273164862
-레퍼럴	CRM	카카오 친구톡	HF_F	주문금액	May-26	월간	19229196
-레퍼럴	CRM	카카오 친구톡	HF_F	주문수	May-26	월간	42
-레퍼럴	CRM	카카오 친구톡	HF_F	체크아웃세션수	May-26	월간	86
-레퍼럴	CRM	카카오 친구톡	HF_F	장바구니세션수	May-26	월간	81
-레퍼럴	CRM	카카오 친구톡	HF_F	상품상세세션수	May-26	월간	454
-레퍼럴	CRM	카카오 친구톡	HF_F	세션수	May-26	월간	1662
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	평균주문금액	May-26	월간	593263.8095
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상세比 주문전환율	May-26	월간	0.040935673
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상품상세전환율	May-26	월간	0.474121996
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	주문금액	May-26	월간	12458540
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	주문수	May-26	월간	21
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	체크아웃세션수	May-26	월간	109
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	장바구니세션수	May-26	월간	108
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상품상세세션수	May-26	월간	513
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	세션수	May-26	월간	1082
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	평균주문금액	May-26	월간	877160
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상세比 주문전환율	May-26	월간	0.04
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상품상세전환율	May-26	월간	0.669642857
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	주문금액	May-26	월간	5262960
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	체크아웃세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	장바구니세션수	May-26	월간	13
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상품상세세션수	May-26	월간	150
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	세션수	May-26	월간	224
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	평균주문금액	May-26	월간	490138.1818
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상세比 주문전환율	May-26	월간	0.079136691
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상품상세전환율	May-26	월간	0.720207254
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	주문금액	May-26	월간	5391520
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	주문수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	체크아웃세션수	May-26	월간	32
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	장바구니세션수	May-26	월간	23
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상품상세세션수	May-26	월간	139
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	세션수	May-26	월간	193
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	평균주문금액	May-26	월간	598604
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상세比 주문전환율	May-26	월간	0.054945055
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상품상세전환율	May-26	월간	0.579617834
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	주문금액	May-26	월간	2993020
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	체크아웃세션수	May-26	월간	15
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	장바구니세션수	May-26	월간	19
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상품상세세션수	May-26	월간	91
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	세션수	May-26	월간	157
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	평균주문금액	May-26	월간	872474
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상세比 주문전환율	May-26	월간	0.076923077
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상품상세전환율	May-26	월간	0.550847458
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	주문금액	May-26	월간	4362370
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	체크아웃세션수	May-26	월간	19
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	장바구니세션수	May-26	월간	21
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상품상세세션수	May-26	월간	65
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	세션수	May-26	월간	118
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	평균주문금액	May-26	월간	28850
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상세比 주문전환율	May-26	월간	0.032432432
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상품상세전환율	May-26	월간	0.608552632
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	주문금액	May-26	월간	173100
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	체크아웃세션수	May-26	월간	31
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	장바구니세션수	May-26	월간	23
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상품상세세션수	May-26	월간	185
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	세션수	May-26	월간	304
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	평균주문금액	May-26	월간	923646.6667
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상세比 주문전환율	May-26	월간	0.041666667
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상품상세전환율	May-26	월간	0.541353383
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	주문금액	May-26	월간	2770940
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	체크아웃세션수	May-26	월간	10
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	장바구니세션수	May-26	월간	16
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상품상세세션수	May-26	월간	72
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	세션수	May-26	월간	133
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	평균주문금액	May-26	월간	387640
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상세比 주문전환율	May-26	월간	0.108695652
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상품상세전환율	May-26	월간	0.686567164
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	주문금액	May-26	월간	1938200
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	체크아웃세션수	May-26	월간	10
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	장바구니세션수	May-26	월간	8
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상품상세세션수	May-26	월간	46
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	세션수	May-26	월간	67
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	평균주문금액	May-26	월간	1738800
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상세比 주문전환율	May-26	월간	0.071428571
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상품상세전환율	May-26	월간	0.583333333
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	주문금액	May-26	월간	1738800
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	체크아웃세션수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상품상세세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	세션수	May-26	월간	24
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	평균주문금액	May-26	월간	2966820
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상세比 주문전환율	May-26	월간	0.181818182
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상품상세전환율	May-26	월간	0.192982456
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	주문금액	May-26	월간	5933640
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상품상세세션수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	세션수	May-26	월간	57
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	평균주문금액	May-26	월간	820843.3333
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상세比 주문전환율	May-26	월간	0.069767442
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상품상세전환율	May-26	월간	0.693548387
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	주문금액	May-26	월간	2462530
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	장바구니세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상품상세세션수	May-26	월간	43
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	세션수	May-26	월간	62
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	평균주문금액	May-26	월간	1170400
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상세比 주문전환율	May-26	월간	0.03125
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상품상세전환율	May-26	월간	0.524590164
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	주문금액	May-26	월간	1170400
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상품상세세션수	May-26	월간	32
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	세션수	May-26	월간	61
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	평균주문금액	May-26	월간	1282320
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상세比 주문전환율	May-26	월간	0.029411765
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상품상세전환율	May-26	월간	0.507462687
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	주문금액	May-26	월간	1282320
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	장바구니세션수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상품상세세션수	May-26	월간	34
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	세션수	May-26	월간	67
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	평균주문금액	May-26	월간	895865
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상세比 주문전환율	May-26	월간	0.114285714
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상품상세전환율	May-26	월간	0.603448276
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	주문금액	May-26	월간	3583460
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	체크아웃세션수	May-26	월간	12
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	장바구니세션수	May-26	월간	13
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상품상세세션수	May-26	월간	35
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	세션수	May-26	월간	58
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	평균주문금액	May-26	월간	112090
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상세比 주문전환율	May-26	월간	0.073170732
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상품상세전환율	May-26	월간	0.713043478
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	주문금액	May-26	월간	672540
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	체크아웃세션수	May-26	월간	16
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	장바구니세션수	May-26	월간	28
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상품상세세션수	May-26	월간	82
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	세션수	May-26	월간	115
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	평균주문금액	May-26	월간	320850
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상세比 주문전환율	May-26	월간	0.083333333
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상품상세전환율	May-26	월간	0.705882353
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	주문금액	May-26	월간	641700
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	체크아웃세션수	May-26	월간	7
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	장바구니세션수	May-26	월간	7
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상품상세세션수	May-26	월간	24
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	세션수	May-26	월간	34
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	평균주문금액	May-26	월간	584450
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상세比 주문전환율	May-26	월간	0.048780488
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상품상세전환율	May-26	월간	0.577464789
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	주문금액	May-26	월간	1168900
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	체크아웃세션수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	장바구니세션수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상품상세세션수	May-26	월간	41
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	세션수	May-26	월간	71
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	평균주문금액	May-26	월간	1124220
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상세比 주문전환율	May-26	월간	0.071428571
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상품상세전환율	May-26	월간	0.4375
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	주문금액	May-26	월간	1124220
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	체크아웃세션수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상품상세세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	세션수	May-26	월간	32
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	평균주문금액	May-26	월간	699000
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상세比 주문전환율	May-26	월간	0.023809524
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상품상세전환율	May-26	월간	0.315789474
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	주문금액	May-26	월간	699000
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	장바구니세션수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상품상세세션수	May-26	월간	42
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	세션수	May-26	월간	133
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	평균주문금액	May-26	월간	2705035
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상세比 주문전환율	May-26	월간	0.117647059
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상품상세전환율	May-26	월간	0.85
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	주문금액	May-26	월간	10820140
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	체크아웃세션수	May-26	월간	14`;
+// 구글 스프레드시트 CSV 내보내기용 주소 (제공해주신 시트 ID 고정)
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1xROmeCqkfbl1A2a1pZnfRF-pfscqaCswDc4lkHGwlic/export?format=csv&gid=0";
 
-// ============================
-// DATA PROCESSING
-// ============================
 const METRICS = ['평균주문금액', '상세比 주문전환율', '유입比 주문전환율', '상품상세전환율', '주문금액', '주문수', '체크아웃세션수', '장바구니세션수', '상품상세세션수', '세션수'];
+const CHANNEL_COLORS = { '문자메세지': '#4fcea4', '카카오 알림톡': '#f7c74f', '카카오 친구톡': '#f76f4f', '브레이즈 인웹 배너': '#a78bfa' };
+const CHANNEL_PILL = { '문자메세지': 'pill-sms', '카카오 알림톡': 'pill-kakao-at', '카카오 친구톡': 'pill-kakao-ft', '브레이즈 인웹 배너': 'pill-banner' };
 
-const CHANNEL_COLORS = {
-  '문자메세지': '#4fcea4',
-  '카카오 알림톡': '#f7c74f',
-  '카카오 친구톡': '#f76f4f',
-  '브레이즈 인웹 배너': '#a78bfa'
-};
-const CHANNEL_PILL = {
-  '문자메세지': 'pill-sms',
-  '카카오 알림톡': 'pill-kakao-at',
-  '카카오 친구톡': 'pill-kakao-ft',
-  '브레이즈 인웹 배너': 'pill-banner'
-};
+let allData = [];
+let currentMetric = '주문금액';
+let drillChannel = null;
+let chartInstances = {};
 
-// Parse raw data
-function parseData(raw) {
-  const lines = raw.trim().split('\n');
-  const records = {};
-  lines.forEach(line => {
-    const parts = line.split('\t');
-    if (parts.length < 8) return;
-    const path2 = parts[2].trim();
-    const campaign = parts[3].trim();
-    const metric = parts[4].trim().replace(/\s+/g, ' ').replace('比', '比');
-    const valStr = parts[7]?.trim();
-    const val = valStr ? parseFloat(valStr) : 0;
-    if (isNaN(val)) return;
-    const key = `${path2}|||${campaign}`;
-    if (!records[key]) records[key] = { path2, campaign };
-    records[key][metric] = val;
-  });
-  return Object.values(records);
+// CSV 파싱 및 피벗 로직 생성 (Melted 구조 -> Pivot 구조)
+async function fetchAndParseGoogleSheet() {
+  try {
+    const response = await fetch(SHEET_CSV_URL);
+    const csvText = await response.text();
+    
+    // CSV 라인 분해
+    const lines = csvText.split('\n').map(line => {
+      // 쉼표 분할 처리시 따옴표 내 문자열 보존 정규식
+      return line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+    });
+
+    if (lines.length < 2) return;
+
+    // 헤더 구조 체크
+    const headers = lines[0].map(h => h.replace(/"/g, '').trim());
+    const typeIdx = headers.indexOf('Utm Type Label');
+    const p1Idx = headers.indexOf('Utm Path1 Label');
+    const p2Idx = headers.indexOf('Utm Path2 Label');
+    const nameIdx = headers.indexOf('측정값 이름');
+    const valIdx = headers.indexOf('측정값');
+    const compIdx = headers.indexOf('선택날짜형식'); // 원래 소스의 캠페인명을 가져오기 위한 꼼수 혹은 매핑 필요시 사용
+
+    const recordsMap = {};
+
+    for(let i = 1; i < lines.length; i++) {
+      const row = lines[i];
+      if (!row || row.length < headers.length) continue;
+
+      const path2 = (row[p2Idx] || '').replace(/"/g, '').trim();
+      const metricName = (row[nameIdx] || '').replace(/"/g, '').trim().replace(/\s+/g, ' ');
+      const val = parseFloat((row[valIdx] || '').replace(/"/g, '').replace(/,/g, '').trim()) || 0;
+      
+      // 캠페인 정보가 없으므로 고유 채널별/형식별 그룹 키 생성 후 가상의 캠페인 조합 설정 가능
+      // 여기서는 유연하게 대시보드를 띄우기 위해 식별 문자열을 조합합니다.
+      const campaign = (row[compIdx] || 'SSEM_CAMPAIGN_' + i).replace(/"/g, '').trim(); 
+      if (!path2 || !metricName) continue;
+
+      const groupKey = `${path2}|||${campaign}`;
+      if (!recordsMap[groupKey]) {
+        recordsMap[groupKey] = { path2, campaign };
+      }
+      recordsMap[groupKey][metricName] = val;
+    }
+
+    allData = Object.values(recordsMap);
+    
+    // 로딩 숨기기 및 대시보드 렌더링
+    document.getElementById('loading').style.display = 'none';
+    initDashboard();
+
+  } catch (error) {
+    console.error("구글 시트를 읽어오는 도중 실패했습니다:", error);
+    document.getElementById('loading').textContent = "❌ 데이터를 연동하지 못했습니다. 시트 권한을 확인해주세요.";
+  }
 }
 
-const allData = parseData(RAW);
-
-// Aggregate by channel (path2)
 function aggregateByChannel(data, metric) {
   const ch = {};
   data.forEach(r => {
@@ -1115,19 +360,9 @@ function median(arr) {
   return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
 }
 
-// ============================
-// STATE
-// ============================
-let currentMetric = '주문금액';
-let drillChannel = null;
-let chartInstances = {};
-
-// ============================
-// FORMAT
-// ============================
 function fmt(metric, val) {
   if (val === undefined || isNaN(val)) return '-';
-  if (metric.includes('전환율')) return (val*100).toFixed(1)+'%';
+  if (metric.includes('전환율')) return (val * 100).toFixed(1) + '%';
   if (metric === '평균주문금액' || metric === '주문금액') {
     if (val >= 1e8) return (val/1e8).toFixed(1)+'억';
     if (val >= 1e4) return (val/1e4).toFixed(0)+'만';
@@ -1136,9 +371,6 @@ function fmt(metric, val) {
   return val.toLocaleString();
 }
 
-// ============================
-// BUILD METRIC BUTTONS
-// ============================
 function buildMetricBar() {
   const bar = document.getElementById('metricBar');
   bar.innerHTML = '';
@@ -1158,26 +390,23 @@ function buildMetricBar() {
   });
 }
 
-// ============================
-// STAT CARDS
-// ============================
 function buildStatCards() {
   const agg = aggregateByChannel(allData, currentMetric);
   const allVals = allData.map(r => r[currentMetric]).filter(v => v !== undefined && !isNaN(v) && v > 0);
   const total = allVals.reduce((a,b)=>a+b, 0);
   const avg = allVals.length ? total/allVals.length : 0;
   const med = median(allVals);
-  const max = Math.max(...allVals);
+  const max = Math.max(...allVals, 0);
   const maxCamp = allData.reduce((best, r) => {
     const v = r[currentMetric];
     return (v > (best[currentMetric]||0)) ? r : best;
   }, {});
 
   const cards = [
-    { label: '전체 합계', value: fmt(currentMetric, total), sub: `${allVals.length}개 캠페인`, accent: '#4f8ef7' },
+    { label: '전체 합계', value: fmt(currentMetric, total), sub: `${allVals.length}개 항목`, accent: '#4f8ef7' },
     { label: '평균값', value: fmt(currentMetric, avg), sub: `중간값 ${fmt(currentMetric, med)}`, accent: '#4fcea4' },
-    { label: '최고값', value: fmt(currentMetric, max), sub: maxCamp.campaign?.substring(0,20)||'-', accent: '#f7c74f' },
-    { label: '캠페인 수', value: allData.length.toString(), sub: `${Object.keys(agg).length}개 채널`, accent: '#f76f4f' },
+    { label: '최고값', value: fmt(currentMetric, max), sub: maxCamp.campaign || '-', accent: '#f7c74f' },
+    { label: '총 분석 그룹', value: allData.length.toString(), sub: `${Object.keys(agg).length}개 채널 소스`, accent: '#f76f4f' },
   ];
   const grid = document.getElementById('statGrid');
   grid.innerHTML = cards.map(c => `
@@ -1188,16 +417,12 @@ function buildStatCards() {
     </div>`).join('');
 }
 
-// ============================
-// MAIN BAR CHART (by channel)
-// ============================
 function updateMainBar() {
   const agg = aggregateByChannel(allData, currentMetric);
   const labels = Object.keys(agg);
   const data = labels.map(ch => {
     const a = agg[ch];
-    return currentMetric.includes('전환율') || currentMetric === '평균주문금액'
-      ? (a.sum / a.count) : a.sum;
+    return currentMetric.includes('전환율') || currentMetric === '평균주문금액' ? (a.sum / a.count) : a.sum;
   });
   const colors = labels.map(l => CHANNEL_COLORS[l] || '#4f8ef7');
 
@@ -1207,42 +432,22 @@ function updateMainBar() {
     type: 'bar',
     data: {
       labels,
-      datasets: [{
-        data,
-        backgroundColor: colors.map(c => c+'99'),
-        borderColor: colors,
-        borderWidth: 2,
-        borderRadius: 6,
-        hoverBackgroundColor: colors,
-      }]
+      datasets: [{ data, backgroundColor: colors.map(c => c+'99'), borderColor: colors, borderWidth: 2, borderRadius: 6 }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       onClick: (evt, elements) => {
-        if (elements.length > 0) {
-          drillChannel = labels[elements[0].index];
-          showDrill(drillChannel);
-        }
+        if (elements.length > 0) { showDrill(labels[elements[0].index]); }
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => ' ' + fmt(currentMetric, ctx.raw)
-          }
-        }
-      },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + fmt(currentMetric, ctx.raw) } } },
       scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 11 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 10 }, callback: v => fmt(currentMetric, v) } }
+        x: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af' } },
+        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', callback: v => fmt(currentMetric, v) } }
       }
     }
   });
 }
 
-// ============================
-// PIE CHART (주문금액 비중)
-// ============================
 function buildPie() {
   const agg = aggregateByChannel(allData, '주문금액');
   const labels = Object.keys(agg);
@@ -1252,779 +457,101 @@ function buildPie() {
   if (chartInstances.pie) chartInstances.pie.destroy();
   chartInstances.pie = new Chart(ctx, {
     type: 'doughnut',
-    data: { labels, datasets: [{ data, backgroundColor: colors.map(c=>c+'cc'), borderColor: colors, borderWidth: 2, hoverOffset: 8 }] },
+    data: { labels, datasets: [{ data, backgroundColor: colors.map(c=>c+'cc'), borderColor: colors, borderWidth: 2 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'right', labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 11 }, padding: 16, boxWidth: 12 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmt('주문금액', ctx.raw)}` } }
-      }
+      plugins: { legend: { position: 'right', labels: { color: '#9ca3af' } } }
     }
   });
 }
 
-// ============================
-// SCATTER (전환율)
-// ============================
 function buildScatter() {
   const byChannel = {};
   allData.forEach(r => {
     if (!byChannel[r.path2]) byChannel[r.path2] = [];
     const x = r['유입比 주문전환율'];
     const y = r['상세比 주문전환율'];
-    if (x && y && !isNaN(x) && !isNaN(y)) {
-      byChannel[r.path2].push({ x: x*100, y: y*100, label: r.campaign });
-    }
+    if (x && y) byChannel[r.path2].push({ x: x*100, y: y*100, label: r.campaign });
   });
   const datasets = Object.entries(byChannel).map(([ch, pts]) => ({
-    label: ch,
-    data: pts,
-    backgroundColor: (CHANNEL_COLORS[ch]||'#4f8ef7')+'99',
-    borderColor: CHANNEL_COLORS[ch]||'#4f8ef7',
-    pointRadius: 5, pointHoverRadius: 8, borderWidth: 1
+    label: ch, data: pts, backgroundColor: (CHANNEL_COLORS[ch]||'#4f8ef7')+'99', borderColor: CHANNEL_COLORS[ch]||'#4f8ef7', pointRadius: 5
   }));
   const ctx = document.getElementById('scatterChart').getContext('2d');
   if (chartInstances.scatter) chartInstances.scatter.destroy();
   chartInstances.scatter = new Chart(ctx, {
     type: 'scatter', data: { datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10 } },
-        tooltip: { callbacks: { label: ctx => `${ctx.raw.label}: (${ctx.raw.x.toFixed(1)}%, ${ctx.raw.y.toFixed(1)}%)` } }
-      },
-      scales: {
-        x: { title: { display: true, text: '유입比 전환율 (%)', color: '#6b7280', font: { family: 'Noto Sans KR', size: 10 } }, grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 } } },
-        y: { title: { display: true, text: '상세比 전환율 (%)', color: '#6b7280', font: { family: 'Noto Sans KR', size: 10 } }, grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 } } }
-      }
-    }
+    options: { responsive: true, maintainAspectRatio: false }
   });
 }
 
-// ============================
-// TOP CAMPAIGN CHART
-// ============================
 function updateTopCampaign() {
-  const sorted = [...allData]
-    .filter(r => r[currentMetric] > 0)
-    .sort((a,b) => (b[currentMetric]||0)-(a[currentMetric]||0))
-    .slice(0, 10);
-  const labels = sorted.map(r => r.campaign.length > 25 ? r.campaign.substring(0,25)+'…' : r.campaign);
-  const data = sorted.map(r => r[currentMetric]);
-  const colors = sorted.map(r => CHANNEL_COLORS[r.path2]||'#4f8ef7');
+  const sorted = [...allData].filter(r => r[currentMetric] > 0).sort((a,b) => (b[currentMetric]||0)-(a[currentMetric]||0)).slice(0, 10);
   const ctx = document.getElementById('topCampaignChart').getContext('2d');
   if (chartInstances.topCamp) chartInstances.topCamp.destroy();
   chartInstances.topCamp = new Chart(ctx, {
     type: 'bar',
-    data: { labels, datasets: [{ data, backgroundColor: colors.map(c=>c+'88'), borderColor: colors, borderWidth: 2, borderRadius: 4 }] },
-    options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + fmt(currentMetric, ctx.raw) } } },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => fmt(currentMetric, v) } },
-        y: { grid: { display: false }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 10 } } }
-      }
-    }
+    data: {
+      labels: sorted.map(r => r.campaign),
+      datasets: [{ data: sorted.map(r => r[currentMetric]), backgroundColor: '#4f8ef788', borderColor: '#4f8ef7', borderWidth: 2 }]
+    },
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
   });
 }
 
-// ============================
-// FUNNEL CHART
-// ============================
 function buildFunnel() {
-  const channels = ['문자메세지','카카오 알림톡','카카오 친구톡','브레이즈 인웹 배너'];
   const funnelMetrics = ['세션수','상품상세세션수','장바구니세션수','체크아웃세션수','주문수'];
-  const datasets = channels.map(ch => {
+  const datasets = Object.keys(CHANNEL_COLORS).map(ch => {
     const chData = allData.filter(r => r.path2 === ch);
     return {
-      label: ch,
-      data: funnelMetrics.map(m => chData.reduce((s,r) => s + (r[m]||0), 0)),
-      backgroundColor: (CHANNEL_COLORS[ch]||'#4f8ef7')+'88',
-      borderColor: CHANNEL_COLORS[ch]||'#4f8ef7',
-      borderWidth: 2, borderRadius: 4
+      label: ch, data: funnelMetrics.map(m => chData.reduce((s,r) => s + (r[m]||0), 0)),
+      backgroundColor: CHANNEL_COLORS[ch]+'88', borderColor: CHANNEL_COLORS[ch], borderWidth: 2
     };
   });
   const ctx = document.getElementById('funnelChart').getContext('2d');
   if (chartInstances.funnel) chartInstances.funnel.destroy();
   chartInstances.funnel = new Chart(ctx, {
-    type: 'bar',
-    data: { labels: funnelMetrics, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 12 } } },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 11 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v } }
-      }
-    }
+    type: 'bar', data: { labels: funnelMetrics, datasets },
+    options: { responsive: true, maintainAspectRatio: false }
   });
 }
 
-// ============================
-// DRILLDOWN
-// ============================
-function showDrill(channel) {
-  const panel = document.getElementById('drillPanel');
-  panel.classList.add('visible');
-  document.getElementById('drillTitle').textContent = `📊 ${channel} — 캠페인별 분석`;
-  document.getElementById('drillSub').textContent = `지표: ${currentMetric} | 상위 10개 캠페인`;
-
-  // Update breadcrumb
-  document.getElementById('breadcrumb').innerHTML = `
-    <span onclick="resetDrill()">전체 채널</span>
-    <span class="sep">›</span>
-    <span style="color:${CHANNEL_COLORS[channel]||'#4f8ef7'}">${channel}</span>`;
-
-  const chData = allData.filter(r => r.path2 === channel && r[currentMetric] > 0)
-    .sort((a,b) => (b[currentMetric]||0)-(a[currentMetric]||0))
-    .slice(0, 10);
-
-  // Chart
-  const ctx = document.getElementById('drillChart').getContext('2d');
-  if (chartInstances.drill) chartInstances.drill.destroy();
-  const color = CHANNEL_COLORS[channel] || '#4f8ef7';
-  chartInstances.drill = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: chData.map(r => r.campaign.length>18 ? r.campaign.substring(0,18)+'…' : r.campaign),
-      datasets: [{ data: chData.map(r => r[currentMetric]), backgroundColor: color+'88', borderColor: color, borderWidth: 2, borderRadius: 4 }]
-    },
-    options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + fmt(currentMetric, ctx.raw) } } },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => fmt(currentMetric, v) } },
-        y: { grid: { display: false }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 10 } } }
-      }
-    }
-  });
-
-  // Table
-  const allChData = allData.filter(r => r.path2 === channel && r[currentMetric] > 0)
-    .sort((a,b) => (b[currentMetric]||0)-(a[currentMetric]||0))
-    .slice(0, 10);
-  const maxVal = allChData[0]?.[currentMetric] || 1;
-  const drillTable = document.getElementById('drillTable');
-  drillTable.innerHTML = `<table>
-    <thead><tr><th>#</th><th>캠페인</th><th>${currentMetric}</th><th>주문수</th><th>세션수</th></tr></thead>
-    <tbody>${allChData.map((r,i) => `
-      <tr>
-        <td><span class="rank-badge ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n'}">${i+1}</span></td>
-        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;">${r.campaign}</td>
-        <td>
-          <div class="bar-inline">
-            <span style="font-family:'Space Mono';font-size:11px;color:${CHANNEL_COLORS[channel]||'#4f8ef7'}">${fmt(currentMetric, r[currentMetric])}</span>
-            <div class="bar-bg"><div class="bar-fill" style="width:${((r[currentMetric]/maxVal)*100).toFixed(0)}%;background:${CHANNEL_COLORS[channel]||'#4f8ef7'}"></div></div>
-          </div>
-        </td>
-        <td>${(r['주문수']||0).toLocaleString()}</td>
-        <td>${(r['세션수']||0).toLocaleString()}</td>
-      </tr>`).join('')}
-    </tbody></table>`;
-
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function closeDrill() {
-  document.getElementById('drillPanel').classList.remove('visible');
-  resetDrill();
-}
-
-function resetDrill() {
-  drillChannel = null;
-  document.getElementById('drillPanel').classList.remove('visible');
-  document.getElementById('breadcrumb').innerHTML = `<span onclick="resetDrill()">전체 채널</span>`;
-}
-
-// ============================
-// FULL TABLE
-// ============================
 function updateFullTable() {
   const sortMetric = document.getElementById('sortMetricSel').value;
   const sortOrder = document.getElementById('sortOrderSel').value;
-  const sorted = [...allData]
-    .filter(r => r[sortMetric] !== undefined && !isNaN(r[sortMetric]))
-    .sort((a,b) => sortOrder === 'desc'
-      ? (b[sortMetric]||0)-(a[sortMetric]||0)
-      : (a[sortMetric]||0)-(b[sortMetric]||0))
-    .slice(0, 30);
-  const maxVal = sorted[0]?.[sortMetric] || 1;
-  const ch = sorted[0]?.path2;
-  document.getElementById('tableTitle').textContent = `캠페인 순위 (${sortMetric} 기준, 상위 30개)`;
+  const sorted = [...allData].sort((a,b) => sortOrder === 'desc' ? (b[sortMetric]||0)-(a[sortMetric]||0) : (a[sortMetric]||0)-(b[sortMetric]||0)).slice(0, 20);
+  
   document.getElementById('fullTable').innerHTML = `<table>
-    <thead><tr><th>#</th><th>채널</th><th>캠페인</th><th>${sortMetric}</th><th>주문금액</th><th>주문수</th><th>세션수</th><th>유입比 전환율</th></tr></thead>
-    <tbody>${sorted.map((r,i) => {
-      const pillCls = CHANNEL_PILL[r.path2]||'';
-      return `<tr>
-        <td><span class="rank-badge ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n'}">${i+1}</span></td>
-        <td><span class="pill ${pillCls}">${r.path2}</span></td>
-        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;">${r.campaign}</td>
-        <td><div class="bar-inline">
-          <span style="font-family:'Space Mono';font-size:11px;min-width:60px">${fmt(sortMetric, r[sortMetric])}</span>
-          <div class="bar-bg"><div class="bar-fill" style="width:${Math.min(100,((r[sortMetric]||0)/maxVal)*100).toFixed(0)}%"></div></div>
-        </div></td>
-        <td style="font-family:'Space Mono';font-size:11px">${fmt('주문금액', r['주문금액'])}</td>
-        <td>${(r['주문수']||0).toLocaleString()}</td>
-        <td>${(r['세션수']||0).toLocaleString()}</td>
-        <td>${r['유입比 주문전환율'] ? (r['유입比 주문전환율']*100).toFixed(1)+'%' : '-'}</td>
-      </tr>`;
-    }).join('')}
+    <thead><tr><th>순위</th><th>채널</th><th>코드정보</th><th>${sortMetric}</th><th>주문금액</th><th>주문수</th></tr></thead>
+    <tbody>${sorted.map((r,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td><span class="pill ${CHANNEL_PILL[r.path2]}">${r.path2}</span></td>
+        <td>${r.campaign}</td>
+        <td>${fmt(sortMetric, r[sortMetric])}</td>
+        <td>${fmt('주문금액', r['주문금액'])}</td>
+        <td>${(r['주문수']||0).toLocaleString()}건</td>
+      </tr>`).join('')}
     </tbody></table>`;
 }
 
-// ============================
-// CAMPAIGN COMPARE
-// ============================
-let selectedCampaigns = new Set();
-let compareCharts = {};
-
-function initCampaignCompare() {
-  // Populate channel filter
-  const channelSel = document.getElementById('channelFilter');
-  const channels = [...new Set(allData.map(r => r.path2))].sort();
-  channels.forEach(ch => {
-    const opt = document.createElement('option');
-    opt.value = ch; opt.textContent = ch;
-    channelSel.appendChild(opt);
-  });
-  channelSel.onchange = () => {
-    selectedCampaigns.clear();
-    renderSelectedTags();
-    filterCampaignList();
-    showDropdown();
-  };
-
-  // Show dropdown on search focus
-  document.getElementById('campaignSearch').addEventListener('focus', showDropdown);
-  document.addEventListener('click', e => {
-    if (!document.getElementById('campaignCompareSection').contains(e.target)) {
-      document.getElementById('campaignDropdown').style.display = 'none';
-    }
-  });
-
-  filterCampaignList();
-}
-
-function getFilteredCampaigns() {
-  const ch = document.getElementById('channelFilter').value;
-  const q = document.getElementById('campaignSearch').value.toLowerCase();
-  return allData
-    .filter(r => (!ch || r.path2 === ch) && (!q || r.campaign.toLowerCase().includes(q)))
-    .map(r => ({ campaign: r.campaign, path2: r.path2 }))
-    .filter((v, i, arr) => arr.findIndex(x => x.campaign === v.campaign) === i)
-    .sort((a,b) => a.campaign.localeCompare(b.campaign));
-}
-
-function filterCampaignList() {
-  const items = getFilteredCampaigns();
-  const dd = document.getElementById('campaignDropdown');
-  dd.innerHTML = '';
-  if (!items.length) {
-    dd.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:12px;">검색 결과 없음</div>';
-    dd.style.display = 'block';
-    return;
-  }
-  items.forEach(item => {
-    const div = document.createElement('div');
-    const isSelected = selectedCampaigns.has(item.campaign);
-    const pillCls = CHANNEL_PILL[item.path2] || '';
-    div.style.cssText = `padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s;border-bottom:1px solid rgba(37,42,56,0.4);${isSelected ? 'background:rgba(79,142,247,0.1);' : ''}`;
-    div.innerHTML = `
-      <div style="width:16px;height:16px;border-radius:4px;border:2px solid ${isSelected ? 'var(--accent)' : 'var(--border)'};background:${isSelected ? 'var(--accent)' : 'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;">
-        ${isSelected ? '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>' : ''}
-      </div>
-      <span style="font-size:12px;color:var(--text-dim);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.campaign}</span>
-      <span class="pill ${pillCls}" style="font-size:9px;flex-shrink:0;">${item.path2}</span>`;
-    div.onmouseenter = () => { if (!isSelected) div.style.background = 'var(--surface)'; };
-    div.onmouseleave = () => { if (!isSelected) div.style.background = 'transparent'; };
-    div.onclick = (e) => {
-      e.stopPropagation();
-      toggleCampaign(item.campaign);
-    };
-    dd.appendChild(div);
-  });
-  dd.style.display = 'block';
-}
-
-function showDropdown() {
-  filterCampaignList();
-  document.getElementById('campaignDropdown').style.display = 'block';
-}
-
-function toggleCampaign(campaign) {
-  if (selectedCampaigns.has(campaign)) {
-    selectedCampaigns.delete(campaign);
-  } else {
-    selectedCampaigns.add(campaign);
-  }
-  renderSelectedTags();
-  filterCampaignList();
-}
-
-function renderSelectedTags() {
-  const container = document.getElementById('selectedTags');
-  const count = document.getElementById('selectedCount');
-  count.textContent = `${selectedCampaigns.size}개 선택`;
-  if (!selectedCampaigns.size) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:11px;align-self:center;">캠페인을 선택하세요</span>';
-    return;
-  }
-  container.innerHTML = [...selectedCampaigns].map(c => `
-    <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.3);border-radius:14px;padding:3px 10px;font-size:11px;color:var(--accent);">
-      ${c.length > 20 ? c.substring(0,20)+'…' : c}
-      <span onclick="toggleCampaign('${c.replace(/'/g,"\\'")}');event.stopPropagation();" style="cursor:pointer;color:var(--text-muted);font-size:13px;line-height:1;" onmouseover="this.style.color='var(--accent3)'" onmouseout="this.style.color='var(--text-muted)'">×</span>
-    </span>`).join('');
-}
-
-function selectAllCampaigns() {
-  getFilteredCampaigns().forEach(item => selectedCampaigns.add(item.campaign));
-  renderSelectedTags();
-  filterCampaignList();
-}
-
-function clearCampaigns() {
-  selectedCampaigns.clear();
-  renderSelectedTags();
-  filterCampaignList();
-}
-
-const COMPARE_COLORS = [
-  '#4f8ef7','#4fcea4','#f7c74f','#f76f4f','#a78bfa',
-  '#38bdf8','#fb7185','#34d399','#fbbf24','#818cf8'
-];
-
-function runComparison() {
-  if (!selectedCampaigns.size) {
-    alert('캠페인을 1개 이상 선택해주세요.');
-    return;
-  }
-  document.getElementById('campaignDropdown').style.display = 'none';
-  document.getElementById('compareEmpty').style.display = 'none';
-  document.getElementById('compareResult').style.display = 'block';
-
-  const campaigns = [...selectedCampaigns];
-  const campData = campaigns.map(c => allData.find(r => r.campaign === c) || { campaign: c });
-
-  // ---- RADAR ----
-  const radarMetrics = ['유입比 주문전환율','상세比 주문전환율','상품상세전환율'];
-  // normalize to 0-1 across all data for each metric
-  const maxVals = {};
-  radarMetrics.forEach(m => {
-    maxVals[m] = Math.max(...allData.map(r => r[m]||0), 0.001);
-  });
-  const radarCtx = document.getElementById('compareRadar').getContext('2d');
-  if (compareCharts.radar) compareCharts.radar.destroy();
-  compareCharts.radar = new Chart(radarCtx, {
-    type: 'radar',
-    data: {
-      labels: ['유입比\n전환율','상세比\n전환율','상품상세\n전환율'],
-      datasets: campaigns.map((c, i) => {
-        const r = campData[i];
-        return {
-          label: c.length > 18 ? c.substring(0,18)+'…' : c,
-          data: radarMetrics.map(m => (((r[m]||0)/maxVals[m])*100).toFixed(1)),
-          borderColor: COMPARE_COLORS[i % COMPARE_COLORS.length],
-          backgroundColor: COMPARE_COLORS[i % COMPARE_COLORS.length] + '22',
-          pointBackgroundColor: COMPARE_COLORS[i % COMPARE_COLORS.length],
-          borderWidth: 2, pointRadius: 4,
-        };
-      })
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10 } } },
-      scales: { r: { grid: { color: '#252a38' }, ticks: { color: '#6b7280', font: { size: 9 }, backdropColor: 'transparent', stepSize: 20 }, pointLabels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 } }, angleLines: { color: '#252a38' } } }
-    }
-  });
-
-  // ---- BAR (주문금액 + 주문수) ----
-  const barCtx = document.getElementById('compareBar').getContext('2d');
-  if (compareCharts.bar) compareCharts.bar.destroy();
-  compareCharts.bar = new Chart(barCtx, {
-    type: 'bar',
-    data: {
-      labels: campaigns.map(c => c.length > 16 ? c.substring(0,16)+'…' : c),
-      datasets: [
-        {
-          label: '주문금액',
-          data: campData.map(r => r['주문금액']||0),
-          backgroundColor: campaigns.map((_,i) => COMPARE_COLORS[i%COMPARE_COLORS.length]+'99'),
-          borderColor: campaigns.map((_,i) => COMPARE_COLORS[i%COMPARE_COLORS.length]),
-          borderWidth: 2, borderRadius: 5, yAxisID: 'y',
-        },
-        {
-          label: '주문수',
-          data: campData.map(r => r['주문수']||0),
-          backgroundColor: '#ffffff22',
-          borderColor: '#ffffff66',
-          borderWidth: 1.5, borderRadius: 5, type: 'line',
-          pointBackgroundColor: campaigns.map((_,i) => COMPARE_COLORS[i%COMPARE_COLORS.length]),
-          pointRadius: 5, tension: 0.3, yAxisID: 'y2',
-        }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10 } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label === '주문금액' ? ` ${fmt('주문금액', ctx.raw)}` : ` ${ctx.raw}건` } } },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 10 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => fmt('주문금액', v) }, title: { display: true, text: '주문금액', color: '#6b7280', font: { size: 10 } } },
-        y2: { position: 'right', grid: { display: false }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 } }, title: { display: true, text: '주문수', color: '#6b7280', font: { size: 10 } } }
-      }
-    }
-  });
-
-  // ---- FULL METRIC TABLE ----
-  // Best value per metric
-  const metricBest = {};
-  METRICS.forEach(m => {
-    const vals = campData.map(r => r[m]||0);
-    metricBest[m] = Math.max(...vals);
-  });
-
-  const tableHTML = `<table>
-    <thead>
-      <tr>
-        <th style="min-width:140px;">지표</th>
-        ${campaigns.map((c,i) => `<th style="color:${COMPARE_COLORS[i%COMPARE_COLORS.length]};min-width:130px;">${c.length>18?c.substring(0,18)+'…':c}</th>`).join('')}
-      </tr>
-    </thead>
-    <tbody>
-      ${METRICS.map(m => {
-        const isRate = m.includes('전환율');
-        const rowMax = metricBest[m] || 1;
-        return `<tr>
-          <td style="color:var(--text-dim);font-size:11px;font-weight:500;">${m}</td>
-          ${campData.map((r,i) => {
-            const v = r[m];
-            const isValid = v !== undefined && !isNaN(v) && v > 0;
-            const isBest = isValid && v === rowMax && campaigns.length > 1;
-            const pct = isValid ? (v / rowMax * 100).toFixed(0) : 0;
-            const color = COMPARE_COLORS[i % COMPARE_COLORS.length];
-            return `<td>
-              <div style="display:flex;flex-direction:column;gap:4px;">
-                <span style="font-family:'Space Mono';font-size:11px;color:${isBest ? color : 'var(--text-dim)'};${isBest?'font-weight:700;':''}">${isValid ? fmt(m, v) : '—'}${isBest && campaigns.length>1?' 🏆':''}</span>
-                ${isValid ? `<div style="height:3px;background:var(--border);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;"></div></div>` : ''}
-              </div>
-            </td>`;
-          }).join('')}
-        </tr>`;
-      }).join('')}
-    </tbody>
+function showDrill(channel) {
+  const panel = document.getElementById('drillPanel');
+  panel.classList.add('visible');
+  document.getElementById('drillTitle').textContent = `📊 ${channel} 상세분석`;
+  const chData = allData.filter(r => r.path2 === channel).slice(0, 5);
+  
+  document.getElementById('drillTable').innerHTML = `<table>
+    <thead><tr><th>항목</th><th>지표 수치</th></tr></thead>
+    <tbody>${chData.map(r => `<tr><td>${r.campaign}</td><td>${fmt(currentMetric, r[currentMetric])}</td></tr>`).join('')}</tbody>
   </table>`;
-  document.getElementById('compareTable').innerHTML = tableHTML;
-
-  // Scroll to result
-  document.getElementById('compareResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ============================
-// CAMPAIGN FUNNEL ANALYSIS
-// ============================
-const FUNNEL_STEPS = ['세션수', '상품상세세션수', '장바구니세션수', '체크아웃세션수', '주문수'];
-const FUNNEL_LABELS = ['유입 세션', '상품 상세', '장바구니', '체크아웃', '주문 완료'];
-const FUNNEL_ICONS  = ['👥', '📄', '🛒', '💳', '✅'];
+function closeDrill() { document.getElementById('drillPanel').classList.remove('visible'); }
+function resetDrill() { closeDrill(); }
 
-let funnelSelectedCampaigns = new Set();
-let funnelCharts = {};
-
-function initFunnelSection() {
-  // Channel filter
-  const sel = document.getElementById('funnelChannelFilter');
-  const channels = [...new Set(allData.map(r => r.path2))].sort();
-  channels.forEach(ch => {
-    const opt = document.createElement('option');
-    opt.value = ch; opt.textContent = ch;
-    sel.appendChild(opt);
-  });
-  sel.onchange = () => {
-    funnelSelectedCampaigns.clear();
-    renderFunnelTags();
-    filterFunnelList();
-    showFunnelDropdown();
-  };
-  document.addEventListener('click', e => {
-    if (!document.getElementById('campaignFunnelSection').contains(e.target)) {
-      document.getElementById('funnelDropdown').style.display = 'none';
-    }
-  });
-  filterFunnelList();
-}
-
-function getFunnelFilteredCampaigns() {
-  const ch  = document.getElementById('funnelChannelFilter').value;
-  const q   = document.getElementById('funnelSearch').value.toLowerCase();
-  return allData
-    .filter(r => (!ch || r.path2 === ch) && (!q || r.campaign.toLowerCase().includes(q)))
-    .filter(r => (r['세션수']||0) > 0)          // 세션 있는 캠페인만
-    .map(r => ({ campaign: r.campaign, path2: r.path2 }))
-    .filter((v,i,arr) => arr.findIndex(x => x.campaign === v.campaign) === i)
-    .sort((a,b) => a.campaign.localeCompare(b.campaign));
-}
-
-function filterFunnelList() {
-  const items = getFunnelFilteredCampaigns();
-  const dd = document.getElementById('funnelDropdown');
-  dd.innerHTML = '';
-  if (!items.length) {
-    dd.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:12px;">검색 결과 없음</div>';
-    dd.style.display = 'block';
-    return;
-  }
-  items.forEach(item => {
-    const isSelected = funnelSelectedCampaigns.has(item.campaign);
-    const pillCls = CHANNEL_PILL[item.path2] || '';
-    const div = document.createElement('div');
-    div.style.cssText = `padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s;border-bottom:1px solid rgba(37,42,56,0.4);${isSelected ? 'background:rgba(79,206,164,0.08);' : ''}`;
-    div.innerHTML = `
-      <div style="width:16px;height:16px;border-radius:4px;border:2px solid ${isSelected ? 'var(--accent4)' : 'var(--border)'};background:${isSelected ? 'var(--accent4)' : 'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;">
-        ${isSelected ? '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6" stroke="#0d0f14" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>' : ''}
-      </div>
-      <span style="font-size:12px;color:var(--text-dim);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.campaign}</span>
-      <span class="pill ${pillCls}" style="font-size:9px;flex-shrink:0;">${item.path2}</span>`;
-    div.onmouseenter = () => { if (!isSelected) div.style.background = 'var(--surface)'; };
-    div.onmouseleave = () => { if (!isSelected) div.style.background = 'transparent'; };
-    div.onclick = e => { e.stopPropagation(); toggleFunnelCampaign(item.campaign); };
-    dd.appendChild(div);
-  });
-  dd.style.display = 'block';
-}
-
-function showFunnelDropdown() { filterFunnelList(); }
-
-function toggleFunnelCampaign(campaign) {
-  if (funnelSelectedCampaigns.size >= 8 && !funnelSelectedCampaigns.has(campaign)) {
-    alert('최대 8개 캠페인까지 선택 가능합니다.'); return;
-  }
-  funnelSelectedCampaigns.has(campaign)
-    ? funnelSelectedCampaigns.delete(campaign)
-    : funnelSelectedCampaigns.add(campaign);
-  renderFunnelTags();
-  filterFunnelList();
-}
-
-function renderFunnelTags() {
-  const count = document.getElementById('funnelSelectedCount');
-  count.textContent = `${funnelSelectedCampaigns.size}개 선택`;
-  const container = document.getElementById('funnelSelectedTags');
-  if (!funnelSelectedCampaigns.size) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:11px;align-self:center;">캠페인을 선택하세요</span>';
-    return;
-  }
-  container.innerHTML = [...funnelSelectedCampaigns].map(c => `
-    <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(79,206,164,0.12);border:1px solid rgba(79,206,164,0.3);border-radius:14px;padding:3px 10px;font-size:11px;color:var(--accent4);">
-      ${c.length > 20 ? c.substring(0,20)+'…' : c}
-      <span onclick="toggleFunnelCampaign('${c.replace(/'/g,"\\'")}');event.stopPropagation();" style="cursor:pointer;color:var(--text-muted);font-size:13px;" onmouseover="this.style.color='var(--accent3)'" onmouseout="this.style.color='var(--text-muted)'">×</span>
-    </span>`).join('');
-}
-
-function funnelSelectAll() {
-  getFunnelFilteredCampaigns().slice(0, 8).forEach(item => funnelSelectedCampaigns.add(item.campaign));
-  renderFunnelTags(); filterFunnelList();
-}
-function funnelClear() {
-  funnelSelectedCampaigns.clear(); renderFunnelTags(); filterFunnelList();
-}
-
-const FUNNEL_COLORS = [
-  '#4fcea4','#4f8ef7','#f7c74f','#f76f4f','#a78bfa',
-  '#38bdf8','#fb7185','#fbbf24'
-];
-
-function runFunnelAnalysis() {
-  if (!funnelSelectedCampaigns.size) { alert('캠페인을 1개 이상 선택해주세요.'); return; }
-  document.getElementById('funnelDropdown').style.display = 'none';
-  document.getElementById('funnelEmpty').style.display = 'none';
-  document.getElementById('funnelResult').style.display = 'block';
-
-  const campaigns = [...funnelSelectedCampaigns];
-  const campData  = campaigns.map(c => allData.find(r => r.campaign === c) || { campaign: c });
-  const mode      = document.getElementById('funnelViewMode').value; // 'absolute' | 'rate'
-
-  // ── 1. 퍼널 스텝 시각화 (각 스텝별 평균 값 + 이탈 화살표) ──────────────
-  const avgSteps = FUNNEL_STEPS.map(s => {
-    const vals = campData.map(r => r[s]||0).filter(v => v > 0);
-    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
-  });
-  const base = avgSteps[0] || 1;
-
-  const stepsHTML = `
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
-      <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:16px;">🔽 평균 퍼널 흐름 (선택 캠페인 기준)</div>
-      <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;">
-        ${FUNNEL_STEPS.map((s, i) => {
-          const val     = avgSteps[i];
-          const pct     = (val / base * 100).toFixed(1);
-          const dropPct = i > 0 && avgSteps[i-1] > 0 ? ((1 - val/avgSteps[i-1])*100).toFixed(1) : null;
-          const barH    = Math.max(8, (val/base)*64);
-          const color   = ['#4fcea4','#4f8ef7','#f7c74f','#f76f4f','#a78bfa'][i];
-          return `
-            ${i > 0 ? `
-              <div style="display:flex;flex-direction:column;align-items:center;min-width:56px;gap:4px;flex-shrink:0;">
-                <span style="font-size:9px;color:var(--accent3);font-family:'Space Mono';">-${dropPct}%</span>
-                <span style="font-size:18px;color:var(--text-muted);">→</span>
-              </div>` : ''}
-            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;min-width:80px;">
-              <span style="font-size:16px;">${FUNNEL_ICONS[i]}</span>
-              <div style="width:56px;display:flex;align-items:flex-end;justify-content:center;height:68px;">
-                <div style="width:44px;height:${barH}px;background:${color}33;border:1px solid ${color};border-radius:4px 4px 0 0;position:relative;transition:height .4s;">
-                  <div style="position:absolute;bottom:-1px;left:0;right:0;height:3px;background:${color};border-radius:0 0 3px 3px;"></div>
-                </div>
-              </div>
-              <span style="font-size:10px;color:${color};font-family:'Space Mono';font-weight:700;">${pct}%</span>
-              <span style="font-size:10px;color:var(--text-dim);text-align:center;line-height:1.3;">${FUNNEL_LABELS[i]}</span>
-              <span style="font-size:9px;color:var(--text-muted);font-family:'Space Mono';">${val.toFixed(0)}건</span>
-            </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  document.getElementById('funnelStepsWrap').innerHTML = stepsHTML;
-
-  // ── 2. 퍼널 비교 차트 (grouped bar) ────────────────────────────────────
-  const funnelCtx = document.getElementById('funnelCampChart').getContext('2d');
-  if (funnelCharts.main) funnelCharts.main.destroy();
-
-  let datasets;
-  if (mode === 'absolute') {
-    datasets = campaigns.map((c, i) => ({
-      label: c.length > 16 ? c.substring(0,16)+'…' : c,
-      data: FUNNEL_STEPS.map(s => campData[i][s]||0),
-      backgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length]+'88',
-      borderColor:     FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-      borderWidth: 2, borderRadius: 4,
-    }));
-  } else {
-    // rate: 각 캠페인의 첫 스텝(세션수) 대비 %
-    datasets = campaigns.map((c, i) => {
-      const base0 = campData[i]['세션수'] || 1;
-      return {
-        label: c.length > 16 ? c.substring(0,16)+'…' : c,
-        data: FUNNEL_STEPS.map(s => +((campData[i][s]||0)/base0*100).toFixed(1)),
-        backgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length]+'88',
-        borderColor:     FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-        borderWidth: 2, borderRadius: 4,
-      };
-    });
-  }
-
-  funnelCharts.main = new Chart(funnelCtx, {
-    type: 'bar',
-    data: { labels: FUNNEL_LABELS, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10, padding: 12 } },
-        tooltip: { callbacks: { label: ctx => mode === 'rate' ? ` ${ctx.dataset.label}: ${ctx.raw}%` : ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString()}건` } }
-      },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 11 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => mode === 'rate' ? v+'%' : v >= 1000 ? (v/1000).toFixed(1)+'k' : v } }
-      }
-    }
-  });
-
-  // ── 3. 단계별 이탈률 차트 ───────────────────────────────────────────────
-  // drop-off: 전 단계 대비 이탈 %  (4 gaps: 세션→상세, 상세→장바구니, 장바구니→체크아웃, 체크아웃→주문)
-  const dropLabels = ['세션→상세', '상세→장바구니', '장바구니→체크아웃', '체크아웃→주문'];
-  const dropCtx = document.getElementById('funnelDropoffChart').getContext('2d');
-  if (funnelCharts.dropoff) funnelCharts.dropoff.destroy();
-
-  const dropDatasets = campaigns.map((c, i) => {
-    const r = campData[i];
-    const steps = FUNNEL_STEPS.map(s => r[s]||0);
-    const drops = [0,1,2,3].map(j => steps[j] > 0 ? +((1 - steps[j+1]/steps[j])*100).toFixed(1) : 0);
-    return {
-      label: c.length > 16 ? c.substring(0,16)+'…' : c,
-      data: drops,
-      borderColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-      backgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length]+'44',
-      pointBackgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-      pointRadius: 5, borderWidth: 2.5, tension: 0.3, fill: false,
-    };
-  });
-
-  funnelCharts.dropoff = new Chart(dropCtx, {
-    type: 'line',
-    data: { labels: dropLabels, datasets: dropDatasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10, padding: 12 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}% 이탈` } }
-      },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 10 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => v+'%' }, min: 0, max: 100 }
-      }
-    }
-  });
-
-  // ── 4. 상세 테이블 ──────────────────────────────────────────────────────
-  const bestConv = {}; // 전환율 최고 캠페인
-  const convKeys = ['세션→상세전환율','상세→장바구니전환율','장바구니→체크아웃전환율','체크아웃→주문전환율'];
-  const convCalc = campData.map(r => {
-    const steps = FUNNEL_STEPS.map(s => r[s]||0);
-    return [0,1,2,3].map(j => steps[j] > 0 ? +(steps[j+1]/steps[j]*100).toFixed(1) : 0);
-  });
-  convKeys.forEach((k,j) => {
-    bestConv[j] = Math.max(...convCalc.map(cv => cv[j]));
-  });
-
-  const tableHTML = `<table>
-    <thead>
-      <tr>
-        <th style="min-width:120px;">단계</th>
-        ${campaigns.map((c,i)=>`<th style="color:${FUNNEL_COLORS[i%FUNNEL_COLORS.length]};min-width:130px;">${c.length>16?c.substring(0,16)+'…':c}</th>`).join('')}
-      </tr>
-    </thead>
-    <tbody>
-      ${FUNNEL_STEPS.map((s,si) => {
-        const rowMax = Math.max(...campData.map(r=>r[s]||0), 1);
-        return `<tr>
-          <td style="color:var(--text-dim);font-size:11px;">
-            <span style="margin-right:6px;">${FUNNEL_ICONS[si]}</span>${FUNNEL_LABELS[si]}
-          </td>
-          ${campData.map((r,i)=>{
-            const v = r[s]||0;
-            const isBest = v === rowMax && campaigns.length>1;
-            const color = FUNNEL_COLORS[i%FUNNEL_COLORS.length];
-            const pct = (v/rowMax*100).toFixed(0);
-            return `<td>
-              <div style="display:flex;flex-direction:column;gap:3px;">
-                <span style="font-family:'Space Mono';font-size:11px;color:${isBest?color:'var(--text-dim)'};${isBest?'font-weight:700;':''}">${v.toLocaleString()}건 ${isBest&&campaigns.length>1?'🏆':''}</span>
-                <div style="height:3px;background:var(--border);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;"></div></div>
-              </div>
-            </td>`;
-          }).join('')}
-        </tr>`;
-      }).join('')}
-      <tr style="border-top:1px solid var(--border);"><td colspan="${campaigns.length+1}" style="padding:6px 12px;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;">단계별 전환율</td></tr>
-      ${convKeys.map((k,j)=>{
-        return `<tr>
-          <td style="color:var(--text-muted);font-size:11px;padding-left:20px;">↳ ${dropLabels[j]}</td>
-          ${convCalc.map((cv,i)=>{
-            const v = cv[j];
-            const isBest = v === bestConv[j] && campaigns.length>1;
-            const color = FUNNEL_COLORS[i%FUNNEL_COLORS.length];
-            return `<td>
-              <span style="font-family:'Space Mono';font-size:11px;color:${isBest?color:'var(--text-dim)'};${isBest?'font-weight:700;':''}">${v}% ${isBest&&campaigns.length>1?'🏆':''}</span>
-            </td>`;
-          }).join('')}
-        </tr>`;
-      }).join('')}
-    </tbody>
-  </table>`;
-  document.getElementById('funnelDetailTable').innerHTML = tableHTML;
-
-  document.getElementById('funnelResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// ============================
-// INIT
-// ============================
-function init() {
-  // Populate sort metric select
+function initDashboard() {
   const sel = document.getElementById('sortMetricSel');
+  sel.innerHTML = '';
   METRICS.forEach(m => {
     const opt = document.createElement('option');
     opt.value = m; opt.textContent = m;
@@ -2042,11 +569,10 @@ function init() {
   updateTopCampaign();
   buildFunnel();
   updateFullTable();
-  initCampaignCompare();
-  initFunnelSection();
 }
 
-init();
+// 스크립트 로드 시 구글 시트 데이터 로딩 시작
+fetchAndParseGoogleSheet();
 </script>
 </body>
 </html>
