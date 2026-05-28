@@ -263,15 +263,6 @@
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:16px;">
-    <!-- 기간 선택 필터 -->
-    <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 14px;">
-      <span style="font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;">기간</span>
-      <div style="display:flex;gap:4px;" id="periodBtns">
-        <button onclick="setPeriod('may')"   id="btn-may"   class="period-btn active">5월 (May)</button>
-        <button onclick="setPeriod('apr')"   id="btn-apr"   class="period-btn">4월 (Apr)</button>
-        <button onclick="setPeriod('both')"  id="btn-both"  class="period-btn">전체 비교</button>
-      </div>
-    </div>
     <div class="breadcrumb" id="breadcrumb">
       <span onclick="resetDrill()">전체 채널</span>
     </div>
@@ -280,19 +271,10 @@
 
 <div class="main">
 
-  <!-- MoM 비교 배너 (전체 비교 모드일 때만 표시) -->
-  <div id="momBanner" style="display:none;background:linear-gradient(135deg,rgba(79,142,247,.1),rgba(79,206,164,.08));border:1px solid rgba(79,142,247,.25);border-radius:12px;padding:16px 24px;margin-bottom:20px;">
-    <div style="font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">📅 월간 비교 요약 (Apr vs May)</div>
-    <div style="display:flex;gap:24px;flex-wrap:wrap;" id="momCards"></div>
-  </div>
-
-  <!-- METRIC SELECTOR -->
   <div class="metric-bar" id="metricBar"></div>
 
-  <!-- STAT CARDS -->
   <div class="stat-grid" id="statGrid"></div>
 
-  <!-- DRILLDOWN PANEL -->
   <div class="drilldown-panel" id="drillPanel">
     <div class="drilldown-header">
       <div>
@@ -307,7 +289,6 @@
     </div>
   </div>
 
-  <!-- MAIN CHARTS -->
   <div class="charts-grid">
     <div class="chart-card full">
       <div class="chart-header">
@@ -361,7 +342,6 @@
     </div>
   </div>
 
-  <!-- BOTTOM TABLE -->
   <div class="chart-card" style="margin-bottom:16px;">
     <div class="chart-header">
       <div>
@@ -379,9 +359,6 @@
     <div class="table-wrap" id="fullTable"></div>
   </div>
 
-  <!-- ============================
-       캠페인 상세 비교 분석
-  ============================= -->
   <div class="chart-card" id="campaignCompareSection">
     <div class="chart-header" style="margin-bottom:0;">
       <div>
@@ -391,9 +368,7 @@
       <div class="chart-tag">MULTI-SELECT · COMPARE</div>
     </div>
 
-    <!-- Filter Row -->
     <div style="display:flex;gap:12px;align-items:flex-start;margin-top:20px;flex-wrap:wrap;">
-      <!-- Channel Filter -->
       <div style="display:flex;flex-direction:column;gap:6px;min-width:160px;">
         <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">채널 필터</label>
         <select id="channelFilter" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer;">
@@ -401,7 +376,6 @@
         </select>
       </div>
 
-      <!-- Campaign Multi-Select -->
       <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:280px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">캠페인 선택 <span id="selectedCount" style="color:var(--accent);margin-left:6px;">0개 선택</span></label>
@@ -410,13 +384,10 @@
             <button onclick="clearCampaigns()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:5px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:inherit;">초기화</button>
           </div>
         </div>
-        <!-- Search box -->
         <input id="campaignSearch" type="text" placeholder="캠페인명 검색..." style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" oninput="filterCampaignList()">
-        <!-- Dropdown list -->
         <div id="campaignDropdown" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;display:none;"></div>
       </div>
 
-      <!-- Selected Tags -->
       <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px;">
         <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">선택된 캠페인</label>
         <div id="selectedTags" style="display:flex;flex-wrap:wrap;gap:6px;min-height:38px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;">
@@ -424,16 +395,13 @@
         </div>
       </div>
 
-      <!-- Compare Button -->
       <div style="display:flex;flex-direction:column;justify-content:flex-end;min-width:100px;">
         <label style="font-size:10px;color:transparent;margin-bottom:6px;">ㅤ</label>
         <button onclick="runComparison()" id="compareBtn" style="background:var(--accent);border:none;color:#fff;border-radius:8px;padding:10px 20px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:500;box-shadow:0 0 16px rgba(79,142,247,.3);transition:all .2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">비교 실행 ▶</button>
       </div>
     </div>
 
-    <!-- Result Area -->
     <div id="compareResult" style="margin-top:24px;display:none;">
-      <!-- Radar + Bar side by side -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
           <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:12px;">📡 전환율 레이더 비교</div>
@@ -444,14 +412,12 @@
           <div style="height:260px;position:relative;"><canvas id="compareBar"></canvas></div>
         </div>
       </div>
-      <!-- Full metric table -->
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
         <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:14px;">📋 전체 지표 비교표</div>
         <div class="table-wrap" id="compareTable"></div>
       </div>
     </div>
 
-    <!-- Empty state -->
     <div id="compareEmpty" style="text-align:center;padding:48px;color:var(--text-muted);">
       <div style="font-size:32px;margin-bottom:12px;">🎯</div>
       <div style="font-size:13px;">위에서 캠페인을 선택하고 <strong style="color:var(--accent)">비교 실행</strong>을 눌러주세요</div>
@@ -459,9 +425,6 @@
     </div>
   </div>
 
-  <!-- ============================
-       캠페인 단위 퍼널 분석
-  ============================= -->
   <div class="chart-card" id="campaignFunnelSection" style="margin-top:16px;">
     <div class="chart-header" style="margin-bottom:0;">
       <div>
@@ -471,9 +434,7 @@
       <div class="chart-tag">FUNNEL · CAMPAIGN</div>
     </div>
 
-    <!-- Filter Row -->
     <div style="display:flex;gap:12px;align-items:flex-start;margin-top:20px;flex-wrap:wrap;">
-      <!-- Channel Filter -->
       <div style="display:flex;flex-direction:column;gap:6px;min-width:160px;">
         <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">채널 필터</label>
         <select id="funnelChannelFilter" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer;">
@@ -481,7 +442,6 @@
         </select>
       </div>
 
-      <!-- Campaign Multi-Select -->
       <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:280px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">캠페인 선택 <span id="funnelSelectedCount" style="color:var(--accent4);margin-left:6px;">0개 선택</span></label>
@@ -494,7 +454,6 @@
         <div id="funnelDropdown" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;display:none;"></div>
       </div>
 
-      <!-- Selected Tags -->
       <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px;">
         <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">선택된 캠페인</label>
         <div id="funnelSelectedTags" style="display:flex;flex-wrap:wrap;gap:6px;min-height:38px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;">
@@ -502,7 +461,6 @@
         </div>
       </div>
 
-      <!-- View Mode + Run -->
       <div style="display:flex;flex-direction:column;gap:6px;min-width:140px;">
         <label style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;">보기 방식</label>
         <select id="funnelViewMode" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;cursor:pointer;">
@@ -513,13 +471,10 @@
       </div>
     </div>
 
-    <!-- Result Area -->
     <div id="funnelResult" style="margin-top:28px;display:none;">
 
-      <!-- 퍼널 스텝 시각화 (SVG 스타일) -->
       <div id="funnelStepsWrap" style="margin-bottom:24px;"></div>
 
-      <!-- 퍼널 차트 + 이탈률 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
           <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:12px;">📊 캠페인별 퍼널 비교</div>
@@ -531,14 +486,12 @@
         </div>
       </div>
 
-      <!-- 퍼널 수치 상세 테이블 -->
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
         <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:14px;">📋 퍼널 단계별 수치 상세</div>
         <div class="table-wrap" id="funnelDetailTable"></div>
       </div>
     </div>
 
-    <!-- Empty state -->
     <div id="funnelEmpty" style="text-align:center;padding:48px;color:var(--text-muted);">
       <div style="font-size:32px;margin-bottom:12px;">🔽</div>
       <div style="font-size:13px;">캠페인을 선택하고 <strong style="color:var(--accent4)">퍼널 분석</strong>을 눌러주세요</div>
@@ -552,504 +505,728 @@
 
 <script>
 // ============================
-// RAW DATA PARSING
+// RAW DATA PARSING (May 2026 로드)
 // ============================
-const RAW = `레퍼럴	CRM	문자메세지	CRM_POINT_260319	평균주문금액	May-26	월간	46360.83333
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	상세比 주문전환율	May-26	월간	0.177777778
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	유입比 주문전환율	May-26	월간	0.428571429
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	상품상세전환율	May-26	월간	0.586956522
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	주문금액	May-26	월간	1112660
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	주문수	May-26	월간	24
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	체크아웃세션수	May-26	월간	39
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	장바구니세션수	May-26	월간	39
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	상품상세세션수	May-26	월간	135
-레퍼럴	CRM	문자메세지	CRM_POINT_260319	세션수	May-26	월간	230
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	평균주문금액	May-26	월간	727700
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상세比 주문전환율	May-26	월간	0.185185185
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	유입比 주문전환율	May-26	월간	0.181818182
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상품상세전환율	May-26	월간	0.574468085
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	주문금액	May-26	월간	3638500
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	주문수	May-26	월간	5
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상품상세세션수	May-26	월간	27
-레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	세션수	May-26	월간	47
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	유입比 주문전환율	May-26	월간	0.096238938
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	유입比 주문전환율	May-26	월간	0.107480653
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	평균주문금액	May-26	월간	584557.931
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.156756757
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.613938053
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	주문금액	May-26	월간	50856540
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	주문수	May-26	월간	87
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	225
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	159
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	555
-레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	세션수	May-26	월간	904
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	평균주문금액	May-26	월간	394956.72
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	상세比 주문전환율	May-26	월간	0.209380235
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	상품상세전환율	May-26	월간	0.513327601
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	주문금액	May-26	월간	49369590
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	주문수	May-26	월간	125
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	체크아웃세션수	May-26	월간	236
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	장바구니세션수	May-26	월간	145
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	상품상세세션수	May-26	월간	597
-레퍼럴	CRM	카카오 알림톡	CRM_WEB_SIGNUP	세션수	May-26	월간	1163
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	평균주문금액	May-26	월간	443420
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상세比 주문전환율	May-26	월간	0.011315417
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상품상세전환율	May-26	월간	0.640398551
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	주문금액	May-26	월간	3547360
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	주문수	May-26	월간	8
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	체크아웃세션수	May-26	월간	36
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	장바구니세션수	May-26	월간	42
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상품상세세션수	May-26	월간	707
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	세션수	May-26	월간	1104
-레퍼럴	CRM	카카오 알림톡	interior_review_write	평균주문금액	May-26	월간	242941.4286
-레퍼럴	CRM	카카오 알림톡	interior_review_write	상세比 주문전환율	May-26	월간	0.083333333
-레퍼럴	CRM	카카오 알림톡	interior_review_write	상품상세전환율	May-26	월간	0.148017621
-레퍼럴	CRM	카카오 알림톡	interior_review_write	주문금액	May-26	월간	3401180
-레퍼럴	CRM	카카오 알림톡	interior_review_write	주문수	May-26	월간	14
-레퍼럴	CRM	카카오 알림톡	interior_review_write	체크아웃세션수	May-26	월간	33
-레퍼럴	CRM	카카오 알림톡	interior_review_write	장바구니세션수	May-26	월간	42
-레퍼럴	CRM	카카오 알림톡	interior_review_write	상품상세세션수	May-26	월간	168
-레퍼럴	CRM	카카오 알림톡	interior_review_write	세션수	May-26	월간	1135
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	평균주문금액	May-26	월간	336075
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상세比 주문전환율	May-26	월간	0.011299435
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상품상세전환율	May-26	월간	0.667924528
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	주문금액	May-26	월간	1344300
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	체크아웃세션수	May-26	월간	26
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	장바구니세션수	May-26	월간	24
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상품상세세션수	May-26	월간	354
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	세션수	May-26	월간	530
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	평균주문금액	May-26	월간	689633.3333
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상세比 주문전환율	May-26	월간	0.087719298
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상품상세전환율	May-26	월간	0.462162162
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	주문금액	May-26	월간	10344500
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	주문수	May-26	월간	15
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	체크아웃세션수	May-26	월간	50
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	장바구니세션수	May-26	월간	31
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상품상세세션수	May-26	월간	171
-레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	세션수	May-26	월간	370
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	평균주문금액	May-26	월간	1355980
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상세比 주문전환율	May-26	월간	0.027027027
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상품상세전환율	May-26	월간	0.573643411
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	주문금액	May-26	월간	2711960
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	장바구니세션수	May-26	월간	11
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상품상세세션수	May-26	월간	74
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	세션수	May-26	월간	129
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	평균주문금액	May-26	월간	1508520
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상세比 주문전환율	May-26	월간	0.036363636
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상품상세전환율	May-26	월간	0.466101695
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	주문금액	May-26	월간	3017040
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	장바구니세션수	May-26	월간	8
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상품상세세션수	May-26	월간	55
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	세션수	May-26	월간	118
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	평균주문금액	May-26	월간	707590
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상세比 주문전환율	May-26	월간	0.04950495
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상품상세전환율	May-26	월간	0.469767442
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	주문금액	May-26	월간	3537950
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	체크아웃세션수	May-26	월간	30
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	장바구니세션수	May-26	월간	23
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상품상세세션수	May-26	월간	101
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	세션수	May-26	월간	215
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	평균주문금액	May-26	월간	729386.9231
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상세比 주문전환율	May-26	월간	0.164556962
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상품상세전환율	May-26	월간	0.572463768
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	주문금액	May-26	월간	9482030
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	주문수	May-26	월간	13
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	체크아웃세션수	May-26	월간	30
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	장바구니세션수	May-26	월간	29
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상품상세세션수	May-26	월간	79
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	세션수	May-26	월간	138
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	평균주문금액	May-26	월간	329784.2857
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상세比 주문전환율	May-26	월간	0.061403509
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상품상세전환율	May-26	월간	0.754966887
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	주문금액	May-26	월간	2308490
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	주문수	May-26	월간	7
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	체크아웃세션수	May-26	월간	17
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	장바구니세션수	May-26	월간	34
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상품상세세션수	May-26	월간	114
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	세션수	May-26	월간	151
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	평균주문금액	May-26	월간	536283.3333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상세比 주문전환율	May-26	월간	0.107142857
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상품상세전환율	May-26	월간	0.577319588
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	주문금액	May-26	월간	3217700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	체크아웃세션수	May-26	월간	18
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	장바구니세션수	May-26	월간	14
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상품상세세션수	May-26	월간	56
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	세션수	May-26	월간	97
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	평균주문금액	May-26	월간	863740
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상세比 주문전환율	May-26	월간	0.1
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상품상세전환율	May-26	월간	0.476190476
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	주문금액	May-26	월간	3454960
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	장바구니세션수	May-26	월간	10
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상품상세세션수	May-26	월간	40
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	세션수	May-26	월간	84
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	평균주문금액	May-26	월간	332633.3333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상세比 주문전환율	May-26	월간	0.068181818
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상품상세전환율	May-26	월간	0.578947368
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	주문금액	May-26	월간	997900
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	체크아웃세션수	May-26	월간	8
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	장바구니세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상품상세세션수	May-26	월간	44
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	세션수	May-26	월간	76
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	평균주문금액	May-26	월간	559605
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상세比 주문전환율	May-26	월간	0.162162162
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상품상세전환율	May-26	월간	0.493333333
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	주문금액	May-26	월간	3357630
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	장바구니세션수	May-26	월간	9
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상품상세세션수	May-26	월간	37
-레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	세션수	May-26	월간	75
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	평균주문금액	May-26	월간	712943.3333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상세比 주문전환율	May-26	월간	0.157894737
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상품상세전환율	May-26	월간	0.422222222
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	주문금액	May-26	월간	2138830
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	체크아웃세션수	May-26	월간	12
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상품상세세션수	May-26	월간	19
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	세션수	May-26	월간	45
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	평균주문금액	May-26	월간	70233.33333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상세比 주문전환율	May-26	월간	0.125
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상품상세전환율	May-26	월간	0.75
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	주문금액	May-26	월간	210700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	장바구니세션수	May-26	월간	10
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상품상세세션수	May-26	월간	24
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	세션수	May-26	월간	32
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	평균주문금액	May-26	월간	703700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상세比 주문전환율	May-26	월간	0.038461538
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상품상세전환율	May-26	월간	0.634146341
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	주문금액	May-26	월간	703700
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상품상세세션수	May-26	월간	26
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	세션수	May-26	월간	41
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	평균주문금액	May-26	월간	122800
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상세比 주문전환율	May-26	월간	0.2
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상품상세전환율	May-26	월간	0.833333333
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	주문금액	May-26	월간	122800
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	체크아웃세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상품상세세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	세션수	May-26	월간	6
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	평균주문금액	May-26	월간	2568240
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상세比 주문전환율	May-26	월간	0.052631579
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상품상세전환율	May-26	월간	0.5
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	주문금액	May-26	월간	2568240
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	체크아웃세션수	May-26	월간	7
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	장바구니세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상품상세세션수	May-26	월간	19
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	세션수	May-26	월간	38
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	평균주문금액	May-26	월간	1444560
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상세比 주문전환율	May-26	월간	0.133333333
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상품상세전환율	May-26	월간	0.576923077
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	주문금액	May-26	월간	2889120
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	장바구니세션수	May-26	월간	0
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상품상세세션수	May-26	월간	15
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	세션수	May-26	월간	26
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	평균주문금액	May-26	월간	1621000
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상세比 주문전환율	May-26	월간	0.047619048
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상품상세전환율	May-26	월간	0.617647059
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	주문금액	May-26	월간	1621000
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	장바구니세션수	May-26	월간	5
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상품상세세션수	May-26	월간	21
-레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	세션수	May-26	월간	34
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	평균주문금액	May-26	월간	360017.1984
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.127582645
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.622107969
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	주문금액	May-26	월간	88924248
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	주문수	May-26	월간	247
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	624
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	534
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	1936
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	세션수	May-26	월간	3112
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	평균주문금액	May-26	월간	291900
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상세比 주문전환율	May-26	월간	0.036363636
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상품상세전환율	May-26	월간	0.604395604
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	주문금액	May-26	월간	583800
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	주문수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	장바구니세션수	May-26	월간	6
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상품상세세션수	May-26	월간	55
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	세션수	May-26	월간	91
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	평균주문금액	May-26	월간	536340
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상세比 주문전환율	May-26	월간	0.11627907
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상품상세전환율	May-26	월간	0.565789474
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	주문금액	May-26	월간	2681700
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	주문수	May-26	월간	5
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	체크아웃세션수	May-26	월간	10
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	장바구니세션수	May-26	월간	12
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상품상세세션수	May-26	월간	43
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	세션수	May-26	월간	76
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	평균주문금액	May-26	월간	545060
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상세比 주문전환율	May-26	월간	0.121212121
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상품상세전환율	May-26	월간	0.66
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	주문금액	May-26	월간	2180240
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	주문수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	장바구니세션수	May-26	월간	9
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상품상세세션수	May-26	월간	33
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	세션수	May-26	월간	50
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	평균주문금액	May-26	월간	2705035
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상세比 주문전환율	May-26	월간	0.117647059
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상품상세전환율	May-26	월간	0.85
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	주문금액	May-26	월간	10820140
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	주문수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	체크아웃세션수	May-26	월간	14
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	장바구니세션수	May-26	월간	10
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상품상세세션수	May-26	월간	34
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	세션수	May-26	월간	40
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	평균주문금액	May-26	월간	434480
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상세比 주문전환율	May-26	월간	0.095238095
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상품상세전환율	May-26	월간	0.724137931
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	주문금액	May-26	월간	868960
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	주문수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	장바구니세션수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상품상세세션수	May-26	월간	21
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	세션수	May-26	월간	29
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	평균주문금액	May-26	월간	1512280
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상세比 주문전환율	May-26	월간	0.066666667
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상품상세전환율	May-26	월간	0.535714286
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	주문금액	May-26	월간	1512280
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	주문수	May-26	월간	1
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	체크아웃세션수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상품상세세션수	May-26	월간	15
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	세션수	May-26	월간	28
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	평균주문금액	May-26	월간	1734826.667
+const RAW = `레퍼럴	CRM	문자메세지	CRM_1DAY_2	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	평균주문금액	May-26	월간	727700.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	평균주문금액	May-26	월간	46360.833333333336
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	평균주문금액	May-26	월간	536340.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	평균주문금액	May-26	월간	545060.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	평균주문금액	May-26	월간	1512280.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	평균주문금액	May-26	월간	434480.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	평균주문금액	May-26	월간	1734826.6666666667
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	평균주문금액	May-26	월간	360017.1983805668
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	평균주문금액	May-26	월간	291900.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	평균주문금액	May-26	월간	2705035.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	평균주문금액	May-26	월간	689633.3333333334
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	평균주문금액	May-26	월간	1355980.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	평균주문금액	May-26	월간	2568240.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	평균주문금액	May-26	월간	1621000.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	평균주문금액	May-26	월간	443420.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	평균주문금액	May-26	월간	336075.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	평균주문금액	May-26	월간	1508520.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	평균주문금액	May-26	월간	1444560.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	평균주문금액	May-26	월간	559605.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	평균주문금액	May-26	월간	707590.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	평균주문금액	May-26	월간	584557.9310344828
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	평균주문금액	May-26	월간	70233.33333333333
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	평균주문금액	May-26	월간	703700.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	평균주문금액	May-26	월간	122800.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	평균주문금액	May-26	월간	863740.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	평균주문금액	May-26	월간	536283.3333333334
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	평균주문금액	May-26	월간	712943.3333333334
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	평균주문금액	May-26	월간	329784.28571428574
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	평균주문금액	May-26	월간	729386.9230769231
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	평균주문금액	May-26	월간	332633.3333333333
+레퍼럴	CRM	카카오 알림톡	interior_review_write	평균주문금액	May-26	월간	242941.42857142858
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	평균주문금액	May-26	월간	593263.8095238096
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	평균주문금액	May-26	월간	2966820.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	평균주문금액	May-26	월간	699000.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	평균주문금액	May-26	월간	872474.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	평균주문금액	May-26	월간	598604.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	평균주문금액	May-26	월간	923646.6666666666
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	평균주문금액	May-26	월간	1282320.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	평균주문금액	May-26	월간	1170400.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	평균주문금액	May-26	월간	1738800.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	평균주문금액	May-26	월간	196659.44444444444
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	평균주문금액	May-26	월간	320850.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	평균주문금액	May-26	월간	1124220.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	평균주문금액	May-26	월간	820843.3333333334
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	평균주문금액	May-26	월간	112090.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	평균주문금액	May-26	월간	28850.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	평균주문금액	May-26	월간	895865.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	평균주문금액	May-26	월간	387640.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	평균주문금액	May-26	월간	490138.1818181818
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	평균주문금액	May-26	월간	584450.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	평균주문금액	May-26	월간	877160.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	평균주문금액	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	HF_F	평균주문금액	May-26	월간	457838.0
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상세比 주문전환율	May-26	월간	0.18518518518518517
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	상세比 주문전환율	May-26	월간	0.17391304347826086
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상세比 주문전환율	May-26	월간	0.11363636363636363
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상세比 주문전환율	May-26	월간	0.11428571428571428
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상세比 주문전환율	May-26	월간	0.06666666666666667
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상세比 주문전환율	May-26	월간	0.09523809523809523
 레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상세比 주문전환율	May-26	월간	0.75
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상품상세전환율	May-26	월간	0.571428571
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	주문금액	May-26	월간	5204480
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	주문수	May-26	월간	3
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	장바구니세션수	May-26	월간	2
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상품상세세션수	May-26	월간	4
-레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	세션수	May-26	월간	7
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	평균주문금액	May-26	월간	196659.4444
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.08490566
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.191681736
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	주문금액	May-26	월간	3539870
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	주문수	May-26	월간	18
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	37
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	22
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	212
-레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	세션수	May-26	월간	1106
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	평균주문금액	May-26	월간	575643.3333
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	상세比 주문전환율	May-26	월간	0.043478261
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	상품상세전환율	May-26	월간	0.096503497
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	주문금액	May-26	월간	1726930
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	체크아웃세션수	May-26	월간	9
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	장바구니세션수	May-26	월간	8
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	상품상세세션수	May-26	월간	69
-레퍼럴	CRM	카카오 친구톡	CRM_WEB_SIGNUP	세션수	May-26	월간	715
-레퍼럴	CRM	카카오 친구톡	HF_F	평균주문금액	May-26	월간	457838
-레퍼럴	CRM	카카오 친구톡	HF_F	상세比 주문전환율	May-26	월간	0.092511013
-레퍼럴	CRM	카카오 친구톡	HF_F	상품상세전환율	May-26	월간	0.273164862
-레퍼럴	CRM	카카오 친구톡	HF_F	주문금액	May-26	월간	19229196
-레퍼럴	CRM	카카오 친구톡	HF_F	주문수	May-26	월간	42
-레퍼럴	CRM	카카오 친구톡	HF_F	체크아웃세션수	May-26	월간	86
-레퍼럴	CRM	카카오 친구톡	HF_F	장바구니세션수	May-26	월간	81
-레퍼럴	CRM	카카오 친구톡	HF_F	상품상세세션수	May-26	월간	454
-레퍼럴	CRM	카카오 친구톡	HF_F	세션수	May-26	월간	1662
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	평균주문금액	May-26	월간	593263.8095
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상세比 주문전환율	May-26	월간	0.040935673
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상품상세전환율	May-26	월간	0.474121996
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	주문금액	May-26	월간	12458540
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	주문수	May-26	월간	21
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	체크아웃세션수	May-26	월간	109
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	장바구니세션수	May-26	월간	108
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상품상세세션수	May-26	월간	513
-레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	세션수	May-26	월간	1082
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	평균주문금액	May-26	월간	877160
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상세比 주문전환율	May-26	월간	0.04
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상품상세전환율	May-26	월간	0.669642857
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	주문금액	May-26	월간	5262960
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	체크아웃세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	장바구니세션수	May-26	월간	13
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상품상세세션수	May-26	월간	150
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	세션수	May-26	월간	224
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	평균주문금액	May-26	월간	490138.1818
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상세比 주문전환율	May-26	월간	0.079136691
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상품상세전환율	May-26	월간	0.720207254
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	주문금액	May-26	월간	5391520
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	주문수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	체크아웃세션수	May-26	월간	32
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	장바구니세션수	May-26	월간	23
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상품상세세션수	May-26	월간	139
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	세션수	May-26	월간	193
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	평균주문금액	May-26	월간	598604
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상세比 주문전환율	May-26	월간	0.054945055
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상품상세전환율	May-26	월간	0.579617834
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	주문금액	May-26	월간	2993020
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	체크아웃세션수	May-26	월간	15
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	장바구니세션수	May-26	월간	19
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상품상세세션수	May-26	월간	91
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	세션수	May-26	월간	157
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	평균주문금액	May-26	월간	872474
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상세比 주문전환율	May-26	월간	0.076923077
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상품상세전환율	May-26	월간	0.550847458
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	주문금액	May-26	월간	4362370
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	체크아웃세션수	May-26	월간	19
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	장바구니세션수	May-26	월간	21
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상품상세세션수	May-26	월간	65
-레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	세션수	May-26	월간	118
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	평균주문금액	May-26	월간	28850
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상세比 주문전환율	May-26	월간	0.032432432
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상품상세전환율	May-26	월간	0.608552632
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	주문금액	May-26	월간	173100
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	체크아웃세션수	May-26	월간	31
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	장바구니세션수	May-26	월간	23
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상품상세세션수	May-26	월간	185
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	세션수	May-26	월간	304
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	평균주문금액	May-26	월간	923646.6667
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상세比 주문전환율	May-26	월간	0.041666667
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상품상세전환율	May-26	월간	0.541353383
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	주문금액	May-26	월간	2770940
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	체크아웃세션수	May-26	월간	10
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	장바구니세션수	May-26	월간	16
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상품상세세션수	May-26	월간	72
-레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	세션수	May-26	월간	133
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	평균주문금액	May-26	월간	387640
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상세比 주문전환율	May-26	월간	0.108695652
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상품상세전환율	May-26	월간	0.686567164
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	주문금액	May-26	월간	1938200
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	주문수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	체크아웃세션수	May-26	월간	10
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	장바구니세션수	May-26	월간	8
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상품상세세션수	May-26	월간	46
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	세션수	May-26	월간	67
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	평균주문금액	May-26	월간	1738800
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상세比 주문전환율	May-26	월간	0.071428571
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상품상세전환율	May-26	월간	0.583333333
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	주문금액	May-26	월간	1738800
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	체크아웃세션수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상품상세세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	세션수	May-26	월간	24
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	평균주문금액	May-26	월간	2966820
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상세比 주문전환율	May-26	월간	0.181818182
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상품상세전환율	May-26	월간	0.192982456
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	주문금액	May-26	월간	5933640
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상품상세세션수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	세션수	May-26	월간	57
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	평균주문금액	May-26	월간	820843.3333
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상세比 주문전환율	May-26	월간	0.069767442
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상품상세전환율	May-26	월간	0.693548387
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	주문금액	May-26	월간	2462530
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	주문수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	체크아웃세션수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	장바구니세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상품상세세션수	May-26	월간	43
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	세션수	May-26	월간	62
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	평균주문금액	May-26	월간	1170400
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.12758264462809918
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상세比 주문전환율	May-26	월간	0.03636363636363636
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상세比 주문전환율	May-26	월간	0.11764705882352941
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상세比 주문전환율	May-26	월간	0.08771929824561403
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상세比 주문전환율	May-26	월간	0.02702702702702703
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상세比 주문전환율	May-26	월간	0.05263157894736842
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상세比 주문전환율	May-26	월간	0.047619047619047616
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상세比 주문전환율	May-26	월간	0.011315417256011315
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상세比 주문전환율	May-26	월간	0.011299435028248588
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상세比 주문전환율	May-26	월간	0.03636363636363636
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상세比 주문전환율	May-26	월간	0.13333333333333333
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상세比 주문전환율	May-26	월간	0.16216216216216217
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상세比 주문전환율	May-26	월간	0.04950495049504951
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.15675675675675677
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상세比 주문전환율	May-26	월간	0.125
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상세比 주문전환율	May-26	월간	0.038461538461538464
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상세比 주문전환율	May-26	월간	0.2
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상세比 주문전환율	May-26	월간	0.1
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상세比 주문전환율	May-26	월간	0.10714285714285714
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상세比 주문전환율	May-26	월간	0.15789473684210525
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상세比 주문전환율	May-26	월간	0.06140350877192982
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상세比 주문전환율	May-26	월간	0.16455696202531644
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상세比 주문전환율	May-26	월간	0.06818181818181818
+레퍼럴	CRM	카카오 알림톡	interior_review_write	상세比 주문전환율	May-26	월간	0.08333333333333333
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상세比 주문전환율	May-26	월간	0.04093567251461988
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상세比 주문전환율	May-26	월간	0.18181818181818182
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상세比 주문전환율	May-26	월간	0.023809523809523808
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상세比 주문전환율	May-26	월간	0.07692307692307693
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상세比 주문전환율	May-26	월간	0.054945054945054944
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상세比 주문전환율	May-26	월간	0.041666666666666664
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상세比 주문전환율	May-26	월간	0.029411764705882353
 레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상세比 주문전환율	May-26	월간	0.03125
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상품상세전환율	May-26	월간	0.524590164
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	주문금액	May-26	월간	1170400
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	체크아웃세션수	May-26	월간	5
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	장바구니세션수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상품상세세션수	May-26	월간	32
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	세션수	May-26	월간	61
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	평균주문금액	May-26	월간	1282320
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상세比 주문전환율	May-26	월간	0.029411765
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상품상세전환율	May-26	월간	0.507462687
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	주문금액	May-26	월간	1282320
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	장바구니세션수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상품상세세션수	May-26	월간	34
-레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	세션수	May-26	월간	67
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	평균주문금액	May-26	월간	895865
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상세比 주문전환율	May-26	월간	0.114285714
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상품상세전환율	May-26	월간	0.603448276
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	주문금액	May-26	월간	3583460
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	체크아웃세션수	May-26	월간	12
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	장바구니세션수	May-26	월간	13
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상품상세세션수	May-26	월간	35
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	세션수	May-26	월간	58
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	평균주문금액	May-26	월간	112090
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상세比 주문전환율	May-26	월간	0.073170732
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상품상세전환율	May-26	월간	0.713043478
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	주문금액	May-26	월간	672540
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	주문수	May-26	월간	6
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	체크아웃세션수	May-26	월간	16
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	장바구니세션수	May-26	월간	28
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상품상세세션수	May-26	월간	82
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	세션수	May-26	월간	115
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	평균주문금액	May-26	월간	320850
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상세比 주문전환율	May-26	월간	0.083333333
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상품상세전환율	May-26	월간	0.705882353
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	주문금액	May-26	월간	641700
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	체크아웃세션수	May-26	월간	7
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	장바구니세션수	May-26	월간	7
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상품상세세션수	May-26	월간	24
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	세션수	May-26	월간	34
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	평균주문금액	May-26	월간	584450
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상세比 주문전환율	May-26	월간	0.048780488
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상품상세전환율	May-26	월간	0.577464789
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	주문금액	May-26	월간	1168900
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	주문수	May-26	월간	2
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	체크아웃세션수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	장바구니세션수	May-26	월간	11
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상품상세세션수	May-26	월간	41
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	세션수	May-26	월간	71
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	평균주문금액	May-26	월간	1124220
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상세比 주문전환율	May-26	월간	0.071428571
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상세比 주문전환율	May-26	월간	0.07142857142857142
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상세比 주문전환율	May-26	월간	0.08490566037735849
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상세比 주문전환율	May-26	월간	0.08333333333333333
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상세比 주문전환율	May-26	월간	0.07142857142857142
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상세比 주문전환율	May-26	월간	0.06976744186046512
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상세比 주문전환율	May-26	월간	0.07317073170731707
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상세比 주문전환율	May-26	월간	0.032432432432432434
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상세比 주문전환율	May-26	월간	0.11428571428571428
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상세比 주문전환율	May-26	월간	0.10869565217391304
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상세比 주문전환율	May-26	월간	0.07913669064748201
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상세比 주문전환율	May-26	월간	0.04878048780487805
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상세比 주문전환율	May-26	월간	0.04
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상세比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	HF_F	상세比 주문전환율	May-26	월간	0.09251101321585903
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	유입比 주문전환율	May-26	월간	0.10416666666666667
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	유입比 주문전환율	May-26	월간	0.10212765957446808
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	유입比 주문전환율	May-26	월간	0.0641025641025641
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	유입比 주문전환율	May-26	월간	0.0784313725490196
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	유입比 주문전환율	May-26	월간	0.035714285714285712
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	유입比 주문전환율	May-26	월간	0.06896551724137931
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	유입比 주문전환율	May-26	월간	0.42857142857142855
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	유입比 주문전환율	May-26	월간	0.07937017994858612
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	유입比 주문전환율	May-26	월간	0.02197802197802198
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	유입比 주문전환율	May-26	월간	0.1
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	유입比 주문전환율	May-26	월간	0.04054054054054054
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	유입比 주문전환율	May-26	월간	0.015503875968992246
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	유입比 주문전환율	May-26	월간	0.02631578947368421
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	유입比 주문전환율	May-26	월간	0.029411764705882353
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	유입比 주문전환율	May-26	월간	0.007246376811594203
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	유입比 주문전환율	May-26	월간	0.007547169811320755
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	유입比 주문전환율	May-26	월간	0.01694915254237288
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	유입比 주문전환율	May-26	월간	0.07692307692307693
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	유입比 주문전환율	May-26	월간	0.08
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	유입比 주문전환율	May-26	월간	0.023255813953488372
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	유입比 주문전환율	May-26	월간	0.09623893805309735
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	유입比 주문전환율	May-26	월간	0.09375
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	유입比 주문전환율	May-26	월간	0.024390243902439025
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	유입比 주문전환율	May-26	월간	0.16666666666666666
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	유입比 주문전환율	May-26	월간	0.047619047619047616
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	유입比 주문전환율	May-26	월간	0.061855670103092786
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	유입比 주문전환율	May-26	월간	0.06666666666666667
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	유입比 주문전환율	May-26	월간	0.046357615894039736
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	유입比 주문전환율	May-26	월간	0.09420289855072464
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	유입比 주문전환율	May-26	월간	0.039473684210526314
+레퍼럴	CRM	카카오 알림톡	interior_review_write	유입比 주문전환율	May-26	월간	0.012334801762114537
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	유입比 주문전환율	May-26	월간	0.019408502772643255
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	유입比 주문전환율	May-26	월간	0.03508771929824561
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	유입比 주문전환율	May-26	월간	0.007518796992481203
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	유입比 주문전환율	May-26	월간	0.0423728813559322
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	유입比 주문전환율	May-26	월간	0.03184713375796178
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	유입比 주문전환율	May-26	월간	0.022556390977443608
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	유입比 주문전환율	May-26	월간	0.014925373134328358
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	유입比 주문전환율	May-26	월간	0.01639344262295082
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	유입比 주문전환율	May-26	월간	0.041666666666666664
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	유입比 주문전환율	May-26	월간	0.0162748643761302
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	유입比 주문전환율	May-26	월간	0.058823529411764705
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	유입比 주문전환율	May-26	월간	0.03125
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	유입比 주문전환율	May-26	월간	0.04838709677419355
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	유입比 주문전환율	May-26	월간	0.05217391304347826
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	유입比 주문전환율	May-26	월간	0.019736842105263157
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	유입比 주문전환율	May-26	월간	0.06896551724137931
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	유입比 주문전환율	May-26	월간	0.07462686567164178
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	유입比 주문전환율	May-26	월간	0.05699481865284974
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	유입比 주문전환율	May-26	월간	0.028169014084507043
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	유입比 주문전환율	May-26	월간	0.026785714285714284
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	유입比 주문전환율	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	HF_F	유입比 주문전환율	May-26	월간	0.02527075812274368
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	상품상세전환율	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상품상세전환율	May-26	월간	0.5625
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	상품상세전환율	May-26	월간	0.5872340425531915
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	상품상세전환율	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상품상세전환율	May-26	월간	0.5641025641025641
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상품상세전환율	May-26	월간	0.6862745098039216
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상품상세전환율	May-26	월간	0.5357142857142857
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상품상세전환율	May-26	월간	0.7241379310344828
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상품상세전환율	May-26	월간	0.5714285714285714
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.622107969151671
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상품상세전환율	May-26	월간	0.6043956043956044
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상품상세전환율	May-26	월간	0.85
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상품상세전환율	May-26	월간	0.46216216216216216
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상품상세전환율	May-26	월간	0.5736434108527132
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상품상세전환율	May-26	월간	0.5
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상품상세전환율	May-26	월간	0.6176470588235294
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상품상세전환율	May-26	월간	0.6403985507246377
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상품상세전환율	May-26	월간	0.6679245283018868
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상품상세전환율	May-26	월간	0.4661016949152542
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상품상세전환율	May-26	월간	0.5769230769230769
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상품상세전환율	May-26	월간	0.49333333333333335
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상품상세전환율	May-26	월간	0.4697674418604651
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.6139380530973452
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상품상세전환율	May-26	월간	0.75
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상품상세전환율	May-26	월간	0.6341463414634146
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상품상세전환율	May-26	월간	0.8333333333333334
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상품상세전환율	May-26	월간	0.47619047619047616
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상품상세전환율	May-26	월간	0.5773195876288659
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상품상세전환율	May-26	월간	0.4222222222222222
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상품상세전환율	May-26	월간	0.7549668874172185
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상품상세전환율	May-26	월간	0.572463768115942
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상품상세전환율	May-26	월간	0.5789473684210527
+레퍼럴	CRM	카카오 알림톡	interior_review_write	상품상세전환율	May-26	월간	0.14801762114537446
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상품상세전환율	May-26	월간	0.4741219963031423
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상품상세전환율	May-26	월간	0.19298245614035088
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상품상세전환율	May-26	월간	0.3157894736842105
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상품상세전환율	May-26	월간	0.5508474576271186
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상품상세전환율	May-26	월간	0.5796178343949044
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상품상세전환율	May-26	월간	0.5413533834586466
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상품상세전환율	May-26	월간	0.5074626865671642
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상품상세전환율	May-26	월간	0.5245901639344263
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상품상세전환율	May-26	월간	0.5833333333333334
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상품상세전환율	May-26	월간	0.19168173598553347
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상품상세전환율	May-26	월간	0.7058823529411765
 레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상품상세전환율	May-26	월간	0.4375
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	주문금액	May-26	월간	1124220
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	체크아웃세션수	May-26	월간	3
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	장바구니세션수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상품상세세션수	May-26	월간	14
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	세션수	May-26	월간	32
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	평균주문금액	May-26	월간	699000
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상세比 주문전환율	May-26	월간	0.023809524
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상품상세전환율	May-26	월간	0.315789474
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	주문금액	May-26	월간	699000
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	주문수	May-26	월간	1
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	체크아웃세션수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	장바구니세션수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상품상세세션수	May-26	월간	42
-레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	세션수	May-26	월간	133
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	평균주문금액	May-26	월간	2705035
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상세比 주문전환율	May-26	월간	0.117647059
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상품상세전환율	May-26	월간	0.85
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	주문금액	May-26	월간	10820140
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	주문수	May-26	월간	4
-레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	체크아웃세션수	May-26	월간	14`;
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	상품상세전환율	May-26	월간	0.3333333333333333
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상품상세전환율	May-26	월간	0.6935483870967742
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상품상세전환율	May-26	월간	0.7130434782608696
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상품상세전환율	May-26	월간	0.6085526315789473
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상품상세전환율	May-26	월간	0.603448275862069
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상품상세전환율	May-26	월간	0.6865671641791045
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상품상세전환율	May-26	월간	0.7202072538860104
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상품상세전환율	May-26	월간	0.5774647887323944
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상품상세전환율	May-26	월간	0.6696428571428571
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상품상세전환율	May-26	월간	0.3333333333333333
+레퍼럴	CRM	카카오 친구톡	HF_F	상품상세전환율	May-26	월간	0.27316486161251504
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	주문금액	May-26	월간	3638500.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	주문금액	May-26	월간	1112660.0
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	주문금액	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	주문금액	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	주문금액	May-26	월간	2681700.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	주문금액	May-26	월간	2180240.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	주문금액	May-26	월간	1512280.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	주문금액	May-26	월간	868960.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	주문금액	May-26	월간	5204480.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	주문금액	May-26	월간	88924248.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	주문금액	May-26	월간	583800.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	주문금액	May-26	월간	10820140.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	주문금액	May-26	월간	10344500.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	주문금액	May-26	월간	2711960.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	주문금액	May-26	월간	2568240.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	주문금액	May-26	월간	1621000.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	주문금액	May-26	월간	3547360.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	주문금액	May-26	월간	1344300.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	주문금액	May-26	월간	3017040.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	주문금액	May-26	월간	2889120.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	주문금액	May-26	월간	3357630.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	주문금액	May-26	월간	3537950.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	주문금액	May-26	월간	50856540.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	주문금액	May-26	월간	210700.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	주문금액	May-26	월간	703700.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	주문금액	May-26	월간	122800.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	주문금액	May-26	월간	3454960.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	주문금액	May-26	월간	3217700.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	주문금액	May-26	월간	2138830.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	주문금액	May-26	월간	2308490.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	주문금액	May-26	월간	9482030.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	주문금액	May-26	월간	997900.0
+레퍼럴	CRM	카카오 알림톡	interior_review_write	주문금액	May-26	월간	3401180.0
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	주문금액	May-26	월간	12458540.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	주문금액	May-26	월간	5933640.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	주문금액	May-26	월간	699000.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	주문금액	May-26	월간	4362370.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	주문금액	May-26	월간	2993020.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	주문금액	May-26	월간	2770940.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	주문금액	May-26	월간	1282320.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	주문금액	May-26	월간	1170400.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	주문금액	May-26	월간	1738800.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	주문금액	May-26	월간	3539870.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	주문금액	May-26	월간	641700.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	주문금액	May-26	월간	1124220.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	주문금액	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	주문금액	May-26	월간	2462530.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	주문금액	May-26	월간	672540.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	주문금액	May-26	월간	173100.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	주문금액	May-26	월간	3583460.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	주문금액	May-26	월간	1938200.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	주문금액	May-26	월간	5391520.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	주문금액	May-26	월간	1168900.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	주문금액	May-26	월간	5262960.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	주문금액	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	HF_F	주문금액	May-26	월간	19229196.0
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	주문수	May-26	월간	5.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	주문수	May-26	월간	24.0
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	주문수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	주문수	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	주문수	May-26	월간	5.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	주문수	May-26	월간	4.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	주문수	May-26	월간	1.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	주문수	May-26	월간	2.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	주문수	May-26	월간	3.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	주문수	May-26	월간	247.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	주문수	May-26	월간	2.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	주문수	May-26	월간	4.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	주문수	May-26	월간	15.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	주문수	May-26	월간	2.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	주문수	May-26	월간	8.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	주문수	May-26	월간	4.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	주문수	May-26	월간	2.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	주문수	May-26	월간	2.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	주문수	May-26	월간	6.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	주문수	May-26	월간	5.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	주문수	May-26	월간	87.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	주문수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	주문수	May-26	월간	4.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	주문수	May-26	월간	6.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	주문수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	주문수	May-26	월간	7.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	주문수	May-26	월간	13.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	주문수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	interior_review_write	주문수	May-26	월간	14.0
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	주문수	May-26	월간	21.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	주문수	May-26	월간	2.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	주문수	May-26	월간	5.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	주문수	May-26	월간	5.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	주문수	May-26	월간	3.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	주문수	May-26	월간	18.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	주문수	May-26	월간	2.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	주문수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	주문수	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	주문수	May-26	월간	3.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	주문수	May-26	월간	6.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	주문수	May-26	월간	6.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	주문수	May-26	월간	4.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	주문수	May-26	월간	5.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	주문수	May-26	월간	11.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	주문수	May-26	월간	2.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	주문수	May-26	월간	6.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	주문수	May-26	월간	0.0
+레퍼럴	CRM	카카오 친구톡	HF_F	주문수	May-26	월간	42.0
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	체크아웃세션수	May-26	월간	9.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	체크아웃세션수	May-26	월간	39.0
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	체크아웃세션수	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	체크아웃세션수	May-26	월간	10.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	체크아웃세션수	May-26	월간	6.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	체크아웃세션수	May-26	월간	2.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	체크아웃세션수	May-26	월간	5.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	체크아웃세션수	May-26	월간	4.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	624.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	체크아웃세션수	May-26	월간	5.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	체크아웃세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	체크아웃세션수	May-26	월간	50.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	체크아웃세션수	May-26	월간	6.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	체크아웃세션수	May-26	월간	7.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	체크아웃세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	체크아웃세션수	May-26	월간	36.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	체크아웃세션수	May-26	월간	26.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	체크아웃세션수	May-26	월간	6.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	체크아웃세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	체크아웃세션수	May-26	월간	9.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	체크아웃세션수	May-26	월간	30.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	225.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	체크아웃세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	체크아웃세션수	May-26	월간	5.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	체크아웃세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	체크아웃세션수	May-26	월간	9.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	체크아웃세션수	May-26	월간	18.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	체크아웃세션수	May-26	월간	12.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	체크아웃세션수	May-26	월간	17.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	체크아웃세션수	May-26	월간	30.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	체크아웃세션수	May-26	월간	8.0
+레퍼럴	CRM	카카오 알림톡	interior_review_write	체크아웃세션수	May-26	월간	33.0
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	체크아웃세션수	May-26	월간	109.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	체크아웃세션수	May-26	월간	6.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	체크아웃세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	체크아웃세션수	May-26	월간	19.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	체크아웃세션수	May-26	월간	15.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	체크아웃세션수	May-26	월간	10.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	체크아웃세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	체크아웃세션수	May-26	월간	5.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	체크아웃세션수	May-26	월간	2.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	체크아웃세션수	May-26	월간	37.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	체크아웃세션수	May-26	월간	7.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	체크아웃세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	체크아웃세션수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	체크아웃세션수	May-26	월간	6.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	체크아웃세션수	May-26	월간	16.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	체크아웃세션수	May-26	월간	31.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	체크아웃세션수	May-26	월간	12.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	체크아웃세션수	May-26	월간	10.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	체크아웃세션수	May-26	월간	32.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	체크아웃세션수	May-26	월간	11.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	체크아웃세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	체크아웃세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 친구톡	HF_F	체크아웃세션수	May-26	월간	86.0
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	장바구니세션수	May-26	월간	3.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	장바구니세션수	May-26	월간	39.0
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	장바구니세션수	May-26	월간	12.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	장바구니세션수	May-26	월간	9.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	장바구니세션수	May-26	월간	1.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	장바구니세션수	May-26	월간	4.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	장바구니세션수	May-26	월간	2.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	534.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	장바구니세션수	May-26	월간	6.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	장바구니세션수	May-26	월간	10.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	장바구니세션수	May-26	월간	31.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	장바구니세션수	May-26	월간	11.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	장바구니세션수	May-26	월간	5.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	장바구니세션수	May-26	월간	5.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	장바구니세션수	May-26	월간	42.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	장바구니세션수	May-26	월간	24.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	장바구니세션수	May-26	월간	8.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	장바구니세션수	May-26	월간	0.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	장바구니세션수	May-26	월간	9.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	장바구니세션수	May-26	월간	23.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	159.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	장바구니세션수	May-26	월간	10.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	장바구니세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	장바구니세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	장바구니세션수	May-26	월간	10.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	장바구니세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	장바구니세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	장바구니세션수	May-26	월간	34.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	장바구니세션수	May-26	월간	29.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	장바구니세션수	May-26	월간	9.0
+레퍼럴	CRM	카카오 알림톡	interior_review_write	장바구니세션수	May-26	월간	42.0
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	장바구니세션수	May-26	월간	108.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	장바구니세션수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	장바구니세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	장바구니세션수	May-26	월간	21.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	장바구니세션수	May-26	월간	19.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	장바구니세션수	May-26	월간	16.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	장바구니세션수	May-26	월간	6.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	장바구니세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	장바구니세션수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	장바구니세션수	May-26	월간	22.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	장바구니세션수	May-26	월간	7.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	장바구니세션수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	장바구니세션수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	장바구니세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	장바구니세션수	May-26	월간	28.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	장바구니세션수	May-26	월간	23.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	장바구니세션수	May-26	월간	13.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	장바구니세션수	May-26	월간	8.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	장바구니세션수	May-26	월간	23.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	장바구니세션수	May-26	월간	11.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	장바구니세션수	May-26	월간	13.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	장바구니세션수	May-26	월간	1.0
+레퍼럴	CRM	카카오 친구톡	HF_F	장바구니세션수	May-26	월간	81.0
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	상품상세세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	상품상세세션수	May-26	월간	27.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	상품상세세션수	May-26	월간	138.0
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	CRM_mattress	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	상품상세세션수	May-26	월간	0.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	상품상세세션수	May-26	월간	44.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	상품상세세션수	May-26	월간	35.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	상품상세세션수	May-26	월간	15.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	상품상세세션수	May-26	월간	21.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	상품상세세션수	May-26	월간	4.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	1936.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	상품상세세션수	May-26	월간	55.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	상품상세세션수	May-26	월간	34.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	상품상세세션수	May-26	월간	171.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	상품상세세션수	May-26	월간	74.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	상품상세세션수	May-26	월간	19.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	상품상세세션수	May-26	월간	21.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	상품상세세션수	May-26	월간	707.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	상품상세세션수	May-26	월간	354.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	상품상세세션수	May-26	월간	55.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	상품상세세션수	May-26	월간	15.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	상품상세세션수	May-26	월간	37.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	상품상세세션수	May-26	월간	101.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	555.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	상품상세세션수	May-26	월간	24.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	상품상세세션수	May-26	월간	26.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	상품상세세션수	May-26	월간	5.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	상품상세세션수	May-26	월간	40.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	상품상세세션수	May-26	월간	56.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	상품상세세션수	May-26	월간	19.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	상품상세세션수	May-26	월간	114.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	상품상세세션수	May-26	월간	79.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	상품상세세션수	May-26	월간	44.0
+레퍼럴	CRM	카카오 알림톡	interior_review_write	상품상세세션수	May-26	월간	168.0
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	상품상세세션수	May-26	월간	513.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	상품상세세션수	May-26	월간	11.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	상품상세세션수	May-26	월간	42.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	상품상세세션수	May-26	월간	65.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	상품상세세션수	May-26	월간	91.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	상품상세세션수	May-26	월간	72.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	상품상세세션수	May-26	월간	34.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	상품상세세션수	May-26	월간	32.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	상품상세세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	상품상세세션수	May-26	월간	212.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	상품상세세션수	May-26	월간	24.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	상품상세세션수	May-26	월간	14.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	상품상세세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	상품상세세션수	May-26	월간	43.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	상품상세세션수	May-26	월간	82.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	상품상세세션수	May-26	월간	185.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	상품상세세션수	May-26	월간	35.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	상품상세세션수	May-26	월간	46.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	상품상세세션수	May-26	월간	139.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	상품상세세션수	May-26	월간	41.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	상품상세세션수	May-26	월간	150.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	상품상세세션수	May-26	월간	3.0
+레퍼럴	CRM	카카오 친구톡	HF_F	상품상세세션수	May-26	월간	454.0
+레퍼럴	CRM	문자메세지	CRM_1DAY_2	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_26BATH_2512RH	세션수	May-26	월간	4.0
+레퍼럴	CRM	문자메세지	CRM_BF_PLAN_K	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_BF_STORE_D	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_DESK_COUPON_LMS_2512	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2512	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_DESK_SPECIAL_COUPON_LMS_2601_AUTO	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_OFF_LMS_2602	세션수	May-26	월간	2.0
+레퍼럴	CRM	문자메세지	CRM_FABRIC_ON_LMS_2602	세션수	May-26	월간	48.0
+레퍼럴	CRM	문자메세지	CRM_HIMART_RH_260320_1_1	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_POINT_260319	세션수	May-26	월간	235.0
+레퍼럴	CRM	문자메세지	CRM_SELFPLANNER_260323	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_2_2	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_2_OFF_260319_AS	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_1_1	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_1	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_SSEMFESTA_OFF_260313_2_2	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	CRM_STORE_CA	세션수	May-26	월간	2.0
+레퍼럴	CRM	문자메세지	CRM_mattress	세션수	May-26	월간	1.0
+레퍼럴	CRM	문자메세지	DX_clm_regular member	세션수	May-26	월간	1.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_HFLD_260325	세션수	May-26	월간	78.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_COUPON_IBM	세션수	May-26	월간	51.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_1	세션수	May-26	월간	28.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_3	세션수	May-26	월간	29.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_MG_MID_4	세션수	May-26	월간	7.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SIGNUP_2508	세션수	May-26	월간	3112.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMFESTA_COUPON	세션수	May-26	월간	91.0
+레퍼럴	CRM	브레이즈 인웹 배너	CRM_SSEMWEEK_TOGETHER	세션수	May-26	월간	40.0
+레퍼럴	CRM	카카오 알림톡	CRM_COUPON_EXPIRE_2508	세션수	May-26	월간	370.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_MY	세션수	May-26	월간	129.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_BED_RTB	세션수	May-26	월간	38.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_DESK_MY	세션수	May-26	월간	34.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_MY	세션수	May-26	월간	1104.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_ELSE_RTB	세션수	May-26	월간	530.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_MY	세션수	May-26	월간	118.0
+레퍼럴	CRM	카카오 알림톡	CRM_HF_ESTIMATE_WARDROBE_RTB	세션수	May-26	월간	26.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_EXPIRE	세션수	May-26	월간	75.0
+레퍼럴	CRM	카카오 알림톡	CRM_RESSURECTION_COUPON_ISSUE	세션수	May-26	월간	215.0
+레퍼럴	CRM	카카오 알림톡	CRM_SIGNUP_2508	세션수	May-26	월간	904.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_1	세션수	May-26	월간	32.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_MAIN_COUPON_FOMO_2	세션수	May-26	월간	41.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER_COUPON_FOMO_1	세션수	May-26	월간	6.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_1ST_AT_2605	세션수	May-26	월간	84.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_AT_2605	세션수	May-26	월간	97.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_DL_AT_2605	세션수	May-26	월간	45.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2604	세션수	May-26	월간	151.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMWEEK_2ND_TG_WH_AT_2605	세션수	May-26	월간	138.0
+레퍼럴	CRM	카카오 알림톡	CRM_SSEMFESTA_TEASER	세션수	May-26	월간	76.0
+레퍼럴	CRM	카카오 알림톡	interior_review_write	세션수	May-26	월간	1135.0
+레퍼럴	CRM	카카오 친구톡	CART_PRICE_DOWN	세션수	May-26	월간	1082.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_BED	세션수	May-26	월간	57.0
+레퍼럴	CRM	카카오 친구톡	CRM_HF_ESTIMATE_ELSE	세션수	May-26	월간	133.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_CLOSET	세션수	May-26	월간	118.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_MID_SSEM	세션수	May-26	월간	157.0
+레퍼럴	CRM	카카오 친구톡	CRM_MG_RE_STAY	세션수	May-26	월간	133.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_ESSEN	세션수	May-26	월간	67.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG	세션수	May-26	월간	61.0
+레퍼럴	CRM	카카오 친구톡	CRM_RE_W_SIG_2	세션수	May-26	월간	24.0
+레퍼럴	CRM	카카오 친구톡	CRM_SIGNUP_2508	세션수	May-26	월간	1106.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_COUPON_1	세션수	May-26	월간	34.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_OFF_BED_2	세션수	May-26	월간	32.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMFESTA_TEASER_PURCHASE	세션수	May-26	월간	9.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_CART_2605	세션수	May-26	월간	62.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2604	세션수	May-26	월간	115.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_1ST_PDP_2605	세션수	May-26	월간	304.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_CART_2605	세션수	May-26	월간	58.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2604	세션수	May-26	월간	67.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_2ND_PDP_2605	세션수	May-26	월간	193.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_HF_2605	세션수	May-26	월간	71.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_START_RH_2605	세션수	May-26	월간	224.0
+레퍼럴	CRM	카카오 친구톡	CRM_SSEMWEEK_TOGETHER	세션수	May-26	월간	4.0
+레퍼럴	CRM	카카오 친구톡	HF_F	세션수	May-26	월간	1662.0`;
 
 // ============================
 // DATA PROCESSING
@@ -1607,7 +1784,6 @@ function runComparison() {
 
   // ---- RADAR ----
   const radarMetrics = ['유입比 주문전환율','상세比 주문전환율','상품상세전환율'];
-  // normalize to 0-1 across all data for each metric
   const maxVals = {};
   radarMetrics.forEach(m => {
     maxVals[m] = Math.max(...allData.map(r => r[m]||0), 0.001);
@@ -1618,435 +1794,4 @@ function runComparison() {
     type: 'radar',
     data: {
       labels: ['유입比\n전환율','상세比\n전환율','상품상세\n전환율'],
-      datasets: campaigns.map((c, i) => {
-        const r = campData[i];
-        return {
-          label: c.length > 18 ? c.substring(0,18)+'…' : c,
-          data: radarMetrics.map(m => (((r[m]||0)/maxVals[m])*100).toFixed(1)),
-          borderColor: COMPARE_COLORS[i % COMPARE_COLORS.length],
-          backgroundColor: COMPARE_COLORS[i % COMPARE_COLORS.length] + '22',
-          pointBackgroundColor: COMPARE_COLORS[i % COMPARE_COLORS.length],
-          borderWidth: 2, pointRadius: 4,
-        };
-      })
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10 } } },
-      scales: { r: { grid: { color: '#252a38' }, ticks: { color: '#6b7280', font: { size: 9 }, backdropColor: 'transparent', stepSize: 20 }, pointLabels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 } }, angleLines: { color: '#252a38' } } }
-    }
-  });
-
-  // ---- BAR (주문금액 + 주문수) ----
-  const barCtx = document.getElementById('compareBar').getContext('2d');
-  if (compareCharts.bar) compareCharts.bar.destroy();
-  compareCharts.bar = new Chart(barCtx, {
-    type: 'bar',
-    data: {
-      labels: campaigns.map(c => c.length > 16 ? c.substring(0,16)+'…' : c),
-      datasets: [
-        {
-          label: '주문금액',
-          data: campData.map(r => r['주문금액']||0),
-          backgroundColor: campaigns.map((_,i) => COMPARE_COLORS[i%COMPARE_COLORS.length]+'99'),
-          borderColor: campaigns.map((_,i) => COMPARE_COLORS[i%COMPARE_COLORS.length]),
-          borderWidth: 2, borderRadius: 5, yAxisID: 'y',
-        },
-        {
-          label: '주문수',
-          data: campData.map(r => r['주문수']||0),
-          backgroundColor: '#ffffff22',
-          borderColor: '#ffffff66',
-          borderWidth: 1.5, borderRadius: 5, type: 'line',
-          pointBackgroundColor: campaigns.map((_,i) => COMPARE_COLORS[i%COMPARE_COLORS.length]),
-          pointRadius: 5, tension: 0.3, yAxisID: 'y2',
-        }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10 } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label === '주문금액' ? ` ${fmt('주문금액', ctx.raw)}` : ` ${ctx.raw}건` } } },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 10 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => fmt('주문금액', v) }, title: { display: true, text: '주문금액', color: '#6b7280', font: { size: 10 } } },
-        y2: { position: 'right', grid: { display: false }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 } }, title: { display: true, text: '주문수', color: '#6b7280', font: { size: 10 } } }
-      }
-    }
-  });
-
-  // ---- FULL METRIC TABLE ----
-  // Best value per metric
-  const metricBest = {};
-  METRICS.forEach(m => {
-    const vals = campData.map(r => r[m]||0);
-    metricBest[m] = Math.max(...vals);
-  });
-
-  const tableHTML = `<table>
-    <thead>
-      <tr>
-        <th style="min-width:140px;">지표</th>
-        ${campaigns.map((c,i) => `<th style="color:${COMPARE_COLORS[i%COMPARE_COLORS.length]};min-width:130px;">${c.length>18?c.substring(0,18)+'…':c}</th>`).join('')}
-      </tr>
-    </thead>
-    <tbody>
-      ${METRICS.map(m => {
-        const isRate = m.includes('전환율');
-        const rowMax = metricBest[m] || 1;
-        return `<tr>
-          <td style="color:var(--text-dim);font-size:11px;font-weight:500;">${m}</td>
-          ${campData.map((r,i) => {
-            const v = r[m];
-            const isValid = v !== undefined && !isNaN(v) && v > 0;
-            const isBest = isValid && v === rowMax && campaigns.length > 1;
-            const pct = isValid ? (v / rowMax * 100).toFixed(0) : 0;
-            const color = COMPARE_COLORS[i % COMPARE_COLORS.length];
-            return `<td>
-              <div style="display:flex;flex-direction:column;gap:4px;">
-                <span style="font-family:'Space Mono';font-size:11px;color:${isBest ? color : 'var(--text-dim)'};${isBest?'font-weight:700;':''}">${isValid ? fmt(m, v) : '—'}${isBest && campaigns.length>1?' 🏆':''}</span>
-                ${isValid ? `<div style="height:3px;background:var(--border);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;"></div></div>` : ''}
-              </div>
-            </td>`;
-          }).join('')}
-        </tr>`;
-      }).join('')}
-    </tbody>
-  </table>`;
-  document.getElementById('compareTable').innerHTML = tableHTML;
-
-  // Scroll to result
-  document.getElementById('compareResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// ============================
-// CAMPAIGN FUNNEL ANALYSIS
-// ============================
-const FUNNEL_STEPS = ['세션수', '상품상세세션수', '장바구니세션수', '체크아웃세션수', '주문수'];
-const FUNNEL_LABELS = ['유입 세션', '상품 상세', '장바구니', '체크아웃', '주문 완료'];
-const FUNNEL_ICONS  = ['👥', '📄', '🛒', '💳', '✅'];
-
-let funnelSelectedCampaigns = new Set();
-let funnelCharts = {};
-
-function initFunnelSection() {
-  // Channel filter
-  const sel = document.getElementById('funnelChannelFilter');
-  const channels = [...new Set(allData.map(r => r.path2))].sort();
-  channels.forEach(ch => {
-    const opt = document.createElement('option');
-    opt.value = ch; opt.textContent = ch;
-    sel.appendChild(opt);
-  });
-  sel.onchange = () => {
-    funnelSelectedCampaigns.clear();
-    renderFunnelTags();
-    filterFunnelList();
-    showFunnelDropdown();
-  };
-  document.addEventListener('click', e => {
-    if (!document.getElementById('campaignFunnelSection').contains(e.target)) {
-      document.getElementById('funnelDropdown').style.display = 'none';
-    }
-  });
-  filterFunnelList();
-}
-
-function getFunnelFilteredCampaigns() {
-  const ch  = document.getElementById('funnelChannelFilter').value;
-  const q   = document.getElementById('funnelSearch').value.toLowerCase();
-  return allData
-    .filter(r => (!ch || r.path2 === ch) && (!q || r.campaign.toLowerCase().includes(q)))
-    .filter(r => (r['세션수']||0) > 0)          // 세션 있는 캠페인만
-    .map(r => ({ campaign: r.campaign, path2: r.path2 }))
-    .filter((v,i,arr) => arr.findIndex(x => x.campaign === v.campaign) === i)
-    .sort((a,b) => a.campaign.localeCompare(b.campaign));
-}
-
-function filterFunnelList() {
-  const items = getFunnelFilteredCampaigns();
-  const dd = document.getElementById('funnelDropdown');
-  dd.innerHTML = '';
-  if (!items.length) {
-    dd.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:12px;">검색 결과 없음</div>';
-    dd.style.display = 'block';
-    return;
-  }
-  items.forEach(item => {
-    const isSelected = funnelSelectedCampaigns.has(item.campaign);
-    const pillCls = CHANNEL_PILL[item.path2] || '';
-    const div = document.createElement('div');
-    div.style.cssText = `padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s;border-bottom:1px solid rgba(37,42,56,0.4);${isSelected ? 'background:rgba(79,206,164,0.08);' : ''}`;
-    div.innerHTML = `
-      <div style="width:16px;height:16px;border-radius:4px;border:2px solid ${isSelected ? 'var(--accent4)' : 'var(--border)'};background:${isSelected ? 'var(--accent4)' : 'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;">
-        ${isSelected ? '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6" stroke="#0d0f14" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>' : ''}
-      </div>
-      <span style="font-size:12px;color:var(--text-dim);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.campaign}</span>
-      <span class="pill ${pillCls}" style="font-size:9px;flex-shrink:0;">${item.path2}</span>`;
-    div.onmouseenter = () => { if (!isSelected) div.style.background = 'var(--surface)'; };
-    div.onmouseleave = () => { if (!isSelected) div.style.background = 'transparent'; };
-    div.onclick = e => { e.stopPropagation(); toggleFunnelCampaign(item.campaign); };
-    dd.appendChild(div);
-  });
-  dd.style.display = 'block';
-}
-
-function showFunnelDropdown() { filterFunnelList(); }
-
-function toggleFunnelCampaign(campaign) {
-  if (funnelSelectedCampaigns.size >= 8 && !funnelSelectedCampaigns.has(campaign)) {
-    alert('최대 8개 캠페인까지 선택 가능합니다.'); return;
-  }
-  funnelSelectedCampaigns.has(campaign)
-    ? funnelSelectedCampaigns.delete(campaign)
-    : funnelSelectedCampaigns.add(campaign);
-  renderFunnelTags();
-  filterFunnelList();
-}
-
-function renderFunnelTags() {
-  const count = document.getElementById('funnelSelectedCount');
-  count.textContent = `${funnelSelectedCampaigns.size}개 선택`;
-  const container = document.getElementById('funnelSelectedTags');
-  if (!funnelSelectedCampaigns.size) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:11px;align-self:center;">캠페인을 선택하세요</span>';
-    return;
-  }
-  container.innerHTML = [...funnelSelectedCampaigns].map(c => `
-    <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(79,206,164,0.12);border:1px solid rgba(79,206,164,0.3);border-radius:14px;padding:3px 10px;font-size:11px;color:var(--accent4);">
-      ${c.length > 20 ? c.substring(0,20)+'…' : c}
-      <span onclick="toggleFunnelCampaign('${c.replace(/'/g,"\\'")}');event.stopPropagation();" style="cursor:pointer;color:var(--text-muted);font-size:13px;" onmouseover="this.style.color='var(--accent3)'" onmouseout="this.style.color='var(--text-muted)'">×</span>
-    </span>`).join('');
-}
-
-function funnelSelectAll() {
-  getFunnelFilteredCampaigns().slice(0, 8).forEach(item => funnelSelectedCampaigns.add(item.campaign));
-  renderFunnelTags(); filterFunnelList();
-}
-function funnelClear() {
-  funnelSelectedCampaigns.clear(); renderFunnelTags(); filterFunnelList();
-}
-
-const FUNNEL_COLORS = [
-  '#4fcea4','#4f8ef7','#f7c74f','#f76f4f','#a78bfa',
-  '#38bdf8','#fb7185','#fbbf24'
-];
-
-function runFunnelAnalysis() {
-  if (!funnelSelectedCampaigns.size) { alert('캠페인을 1개 이상 선택해주세요.'); return; }
-  document.getElementById('funnelDropdown').style.display = 'none';
-  document.getElementById('funnelEmpty').style.display = 'none';
-  document.getElementById('funnelResult').style.display = 'block';
-
-  const campaigns = [...funnelSelectedCampaigns];
-  const campData  = campaigns.map(c => allData.find(r => r.campaign === c) || { campaign: c });
-  const mode      = document.getElementById('funnelViewMode').value; // 'absolute' | 'rate'
-
-  // ── 1. 퍼널 스텝 시각화 (각 스텝별 평균 값 + 이탈 화살표) ──────────────
-  const avgSteps = FUNNEL_STEPS.map(s => {
-    const vals = campData.map(r => r[s]||0).filter(v => v > 0);
-    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
-  });
-  const base = avgSteps[0] || 1;
-
-  const stepsHTML = `
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
-      <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:16px;">🔽 평균 퍼널 흐름 (선택 캠페인 기준)</div>
-      <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;">
-        ${FUNNEL_STEPS.map((s, i) => {
-          const val     = avgSteps[i];
-          const pct     = (val / base * 100).toFixed(1);
-          const dropPct = i > 0 && avgSteps[i-1] > 0 ? ((1 - val/avgSteps[i-1])*100).toFixed(1) : null;
-          const barH    = Math.max(8, (val/base)*64);
-          const color   = ['#4fcea4','#4f8ef7','#f7c74f','#f76f4f','#a78bfa'][i];
-          return `
-            ${i > 0 ? `
-              <div style="display:flex;flex-direction:column;align-items:center;min-width:56px;gap:4px;flex-shrink:0;">
-                <span style="font-size:9px;color:var(--accent3);font-family:'Space Mono';">-${dropPct}%</span>
-                <span style="font-size:18px;color:var(--text-muted);">→</span>
-              </div>` : ''}
-            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;min-width:80px;">
-              <span style="font-size:16px;">${FUNNEL_ICONS[i]}</span>
-              <div style="width:56px;display:flex;align-items:flex-end;justify-content:center;height:68px;">
-                <div style="width:44px;height:${barH}px;background:${color}33;border:1px solid ${color};border-radius:4px 4px 0 0;position:relative;transition:height .4s;">
-                  <div style="position:absolute;bottom:-1px;left:0;right:0;height:3px;background:${color};border-radius:0 0 3px 3px;"></div>
-                </div>
-              </div>
-              <span style="font-size:10px;color:${color};font-family:'Space Mono';font-weight:700;">${pct}%</span>
-              <span style="font-size:10px;color:var(--text-dim);text-align:center;line-height:1.3;">${FUNNEL_LABELS[i]}</span>
-              <span style="font-size:9px;color:var(--text-muted);font-family:'Space Mono';">${val.toFixed(0)}건</span>
-            </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  document.getElementById('funnelStepsWrap').innerHTML = stepsHTML;
-
-  // ── 2. 퍼널 비교 차트 (grouped bar) ────────────────────────────────────
-  const funnelCtx = document.getElementById('funnelCampChart').getContext('2d');
-  if (funnelCharts.main) funnelCharts.main.destroy();
-
-  let datasets;
-  if (mode === 'absolute') {
-    datasets = campaigns.map((c, i) => ({
-      label: c.length > 16 ? c.substring(0,16)+'…' : c,
-      data: FUNNEL_STEPS.map(s => campData[i][s]||0),
-      backgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length]+'88',
-      borderColor:     FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-      borderWidth: 2, borderRadius: 4,
-    }));
-  } else {
-    // rate: 각 캠페인의 첫 스텝(세션수) 대비 %
-    datasets = campaigns.map((c, i) => {
-      const base0 = campData[i]['세션수'] || 1;
-      return {
-        label: c.length > 16 ? c.substring(0,16)+'…' : c,
-        data: FUNNEL_STEPS.map(s => +((campData[i][s]||0)/base0*100).toFixed(1)),
-        backgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length]+'88',
-        borderColor:     FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-        borderWidth: 2, borderRadius: 4,
-      };
-    });
-  }
-
-  funnelCharts.main = new Chart(funnelCtx, {
-    type: 'bar',
-    data: { labels: FUNNEL_LABELS, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10, padding: 12 } },
-        tooltip: { callbacks: { label: ctx => mode === 'rate' ? ` ${ctx.dataset.label}: ${ctx.raw}%` : ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString()}건` } }
-      },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 11 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => mode === 'rate' ? v+'%' : v >= 1000 ? (v/1000).toFixed(1)+'k' : v } }
-      }
-    }
-  });
-
-  // ── 3. 단계별 이탈률 차트 ───────────────────────────────────────────────
-  // drop-off: 전 단계 대비 이탈 %  (4 gaps: 세션→상세, 상세→장바구니, 장바구니→체크아웃, 체크아웃→주문)
-  const dropLabels = ['세션→상세', '상세→장바구니', '장바구니→체크아웃', '체크아웃→주문'];
-  const dropCtx = document.getElementById('funnelDropoffChart').getContext('2d');
-  if (funnelCharts.dropoff) funnelCharts.dropoff.destroy();
-
-  const dropDatasets = campaigns.map((c, i) => {
-    const r = campData[i];
-    const steps = FUNNEL_STEPS.map(s => r[s]||0);
-    const drops = [0,1,2,3].map(j => steps[j] > 0 ? +((1 - steps[j+1]/steps[j])*100).toFixed(1) : 0);
-    return {
-      label: c.length > 16 ? c.substring(0,16)+'…' : c,
-      data: drops,
-      borderColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-      backgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length]+'44',
-      pointBackgroundColor: FUNNEL_COLORS[i%FUNNEL_COLORS.length],
-      pointRadius: 5, borderWidth: 2.5, tension: 0.3, fill: false,
-    };
-  });
-
-  funnelCharts.dropoff = new Chart(dropCtx, {
-    type: 'line',
-    data: { labels: dropLabels, datasets: dropDatasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#9ca3af', font: { family: 'Noto Sans KR', size: 10 }, boxWidth: 10, padding: 12 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}% 이탈` } }
-      },
-      scales: {
-        x: { grid: { color: '#252a38' }, ticks: { color: '#e8eaf2', font: { family: 'Noto Sans KR', size: 10 } } },
-        y: { grid: { color: '#252a38' }, ticks: { color: '#9ca3af', font: { family: 'Space Mono', size: 9 }, callback: v => v+'%' }, min: 0, max: 100 }
-      }
-    }
-  });
-
-  // ── 4. 상세 테이블 ──────────────────────────────────────────────────────
-  const bestConv = {}; // 전환율 최고 캠페인
-  const convKeys = ['세션→상세전환율','상세→장바구니전환율','장바구니→체크아웃전환율','체크아웃→주문전환율'];
-  const convCalc = campData.map(r => {
-    const steps = FUNNEL_STEPS.map(s => r[s]||0);
-    return [0,1,2,3].map(j => steps[j] > 0 ? +(steps[j+1]/steps[j]*100).toFixed(1) : 0);
-  });
-  convKeys.forEach((k,j) => {
-    bestConv[j] = Math.max(...convCalc.map(cv => cv[j]));
-  });
-
-  const tableHTML = `<table>
-    <thead>
-      <tr>
-        <th style="min-width:120px;">단계</th>
-        ${campaigns.map((c,i)=>`<th style="color:${FUNNEL_COLORS[i%FUNNEL_COLORS.length]};min-width:130px;">${c.length>16?c.substring(0,16)+'…':c}</th>`).join('')}
-      </tr>
-    </thead>
-    <tbody>
-      ${FUNNEL_STEPS.map((s,si) => {
-        const rowMax = Math.max(...campData.map(r=>r[s]||0), 1);
-        return `<tr>
-          <td style="color:var(--text-dim);font-size:11px;">
-            <span style="margin-right:6px;">${FUNNEL_ICONS[si]}</span>${FUNNEL_LABELS[si]}
-          </td>
-          ${campData.map((r,i)=>{
-            const v = r[s]||0;
-            const isBest = v === rowMax && campaigns.length>1;
-            const color = FUNNEL_COLORS[i%FUNNEL_COLORS.length];
-            const pct = (v/rowMax*100).toFixed(0);
-            return `<td>
-              <div style="display:flex;flex-direction:column;gap:3px;">
-                <span style="font-family:'Space Mono';font-size:11px;color:${isBest?color:'var(--text-dim)'};${isBest?'font-weight:700;':''}">${v.toLocaleString()}건 ${isBest&&campaigns.length>1?'🏆':''}</span>
-                <div style="height:3px;background:var(--border);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;"></div></div>
-              </div>
-            </td>`;
-          }).join('')}
-        </tr>`;
-      }).join('')}
-      <tr style="border-top:1px solid var(--border);"><td colspan="${campaigns.length+1}" style="padding:6px 12px;font-size:10px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;">단계별 전환율</td></tr>
-      ${convKeys.map((k,j)=>{
-        return `<tr>
-          <td style="color:var(--text-muted);font-size:11px;padding-left:20px;">↳ ${dropLabels[j]}</td>
-          ${convCalc.map((cv,i)=>{
-            const v = cv[j];
-            const isBest = v === bestConv[j] && campaigns.length>1;
-            const color = FUNNEL_COLORS[i%FUNNEL_COLORS.length];
-            return `<td>
-              <span style="font-family:'Space Mono';font-size:11px;color:${isBest?color:'var(--text-dim)'};${isBest?'font-weight:700;':''}">${v}% ${isBest&&campaigns.length>1?'🏆':''}</span>
-            </td>`;
-          }).join('')}
-        </tr>`;
-      }).join('')}
-    </tbody>
-  </table>`;
-  document.getElementById('funnelDetailTable').innerHTML = tableHTML;
-
-  document.getElementById('funnelResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// ============================
-// INIT
-// ============================
-function init() {
-  // Populate sort metric select
-  const sel = document.getElementById('sortMetricSel');
-  METRICS.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m; opt.textContent = m;
-    if (m === currentMetric) opt.selected = true;
-    sel.appendChild(opt);
-  });
-  sel.onchange = updateFullTable;
-  document.getElementById('sortOrderSel').onchange = updateFullTable;
-
-  buildMetricBar();
-  buildStatCards();
-  updateMainBar();
-  buildPie();
-  buildScatter();
-  updateTopCampaign();
-  buildFunnel();
-  updateFullTable();
-  initCampaignCompare();
-  initFunnelSection();
-}
-
-init();
-</script>
-</body>
-</html>
+      datasets: campaigns.map
